@@ -144,7 +144,19 @@ public class UnittestenTimeTest {
     
     @Test
     public void TestTimeGetDayInWeek(){
-        Assert.assertEquals("Day is supposed to be Friday, but it is " + testtime.getDayInWeek().name(),DayInWeek.WED,testtime.getDayInWeek());
+        Assert.assertEquals("Day is supposed to be Wedsnesday, but it is " + testtime.getDayInWeek().name(),DayInWeek.WED,testtime.getDayInWeek());
+        Time testtimesun = new Time(2015,8,20,22,22);
+        Assert.assertEquals("Day is supposed to be Sunday, but it is " + testtime.getDayInWeek().name(),DayInWeek.SUN,testtimesun.getDayInWeek());
+        Time testtimemon = new Time(2015,8,21,22,22);
+        Assert.assertEquals("Day is supposed to be Monday, but it is " + testtime.getDayInWeek().name(),DayInWeek.MON,testtimemon.getDayInWeek());
+        Time testtimetue = new Time(2015,8,22,22,22);
+        Assert.assertEquals("Day is supposed to be Tuesday, but it is " + testtime.getDayInWeek().name(),DayInWeek.TUE,testtimetue.getDayInWeek());
+        Time testtimethu = new Time(2015,8,24,22,22);
+        Assert.assertEquals("Day is supposed to be Thursday, but it is " + testtime.getDayInWeek().name(),DayInWeek.THU,testtimethu.getDayInWeek());
+        Time testtimefri = new Time(2015,8,25,22,22);
+        Assert.assertEquals("Day is supposed to be Friday, but it is " + testtime.getDayInWeek().name(),DayInWeek.FRI,testtimefri.getDayInWeek());
+        Time testtimesat = new Time(2015,8,26,22,22);
+        Assert.assertEquals("Day is supposed to be Saturday, but it is " + testtime.getDayInWeek().name(),DayInWeek.SAT,testtimesat.getDayInWeek());
     }
     
     @Test
@@ -170,5 +182,11 @@ public class UnittestenTimeTest {
         Assert.assertEquals("Should be -1", -1,testtime.compareTo(comparetime));
         comparetime = new Time(2015,8,23,22,22);
         Assert.assertEquals("Should be 0", 0,testtime.compareTo(comparetime));
+    }
+    
+    @Test
+    public void TestTimeDifference(){
+        Time comparetime = new Time(2015,8,23,22,40);
+        Assert.assertEquals("Should be 18",18,testtime.difference(comparetime));
     }
 }
