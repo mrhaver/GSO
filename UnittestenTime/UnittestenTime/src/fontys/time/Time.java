@@ -37,7 +37,7 @@ public class Time implements ITime {
         if (h < 0 || h > 23) {
             throw new IllegalArgumentException("hours must be within 0..23");
         }
-        if (m < 0 || m > 59) {
+        if (min < 0 || min > 59) {
             throw new IllegalArgumentException("minutes must be within 0..59");
         }
         
