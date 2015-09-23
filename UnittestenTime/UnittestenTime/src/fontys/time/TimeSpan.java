@@ -31,7 +31,6 @@ public class TimeSpan implements ITimeSpan {
             throw new IllegalArgumentException("begin time "
                     + bt + " must be earlier than end time " + et);
         }
-
         this.bt = bt;
         this.et = et;
     }
