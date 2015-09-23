@@ -4,18 +4,15 @@
  * and open the template in the editor.
  */
 
-<<<<<<< HEAD
+
 import fontys.time.Time;
 import fontys.time.TimeSpan;
 import junit.framework.Assert;
-=======
 import fontys.time.DayInWeek;
 import fontys.time.ITime;
 import fontys.time.Time;
->>>>>>> origin/master
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -26,16 +23,12 @@ import static org.junit.Assert.*;
  * @author Frank Haver
  */
 public class UnittestenTimeTest {
-<<<<<<< HEAD
     
     Time bt;
-    Time et;
-    
+    Time et;   
     TimeSpan ts;
-    
-=======
     Time testtime;
->>>>>>> origin/master
+
     public UnittestenTimeTest() {
         
     }
@@ -50,14 +43,11 @@ public class UnittestenTimeTest {
     
     @Before
     public void setUp() {
-<<<<<<< HEAD
        bt = new Time(1996, 1, 15, 9, 15); 
        et = new Time(1996, 1, 15, 9, 20);
        
        ts = new TimeSpan(bt, et);
-=======
-        testtime = new Time(2015,8,23,22,22);
->>>>>>> origin/master
+       testtime = new Time(2015,8,23,22,22);
     }
     
     @After
@@ -66,15 +56,13 @@ public class UnittestenTimeTest {
 
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
-<<<<<<< HEAD
     
     /**
      * Test de happy flow van de constructor
      */
     @Test
     public void testTimeSpanConstructor(){      
-       TimeSpan ts = new TimeSpan(bt, et);
-       
+        
        Assert.assertNotNull("Object van type timespan verwacht", ts);
     }
     
@@ -84,7 +72,7 @@ public class UnittestenTimeTest {
      */
     @Test (expected = IllegalArgumentException.class)
     public void testTimeSpanConstructorException(){      
-       TimeSpan ts = new TimeSpan(et, bt);
+       ts = new TimeSpan(et, bt);
     }
     
     /**
@@ -96,7 +84,6 @@ public class UnittestenTimeTest {
     public void testTimeSpanBeginTime(){
         Time bt2 = new Time(1996, 1, 15, 9, 15);
         
-        TimeSpan ts = new TimeSpan(bt, et);
         
         Assert.assertTrue("Begintijd is niet hetzelfde", ts.getBeginTime().compareTo(bt2) == 0);
     }
@@ -109,8 +96,6 @@ public class UnittestenTimeTest {
     @Test 
     public void testTimeSpanEndTime(){
         Time et2 = new Time(1996, 1, 15, 9, 20);
-        
-        TimeSpan ts = new TimeSpan(bt, et);
         
         Assert.assertTrue("Eindtijd is niet hetzelfde", ts.getEndTime().compareTo(et2) == 0);
     }
@@ -133,7 +118,7 @@ public class UnittestenTimeTest {
         ts.setBeginTime(btNieuw);
         
         Assert.assertEquals("Begintijd niet goed geset" , bt, ts.getBeginTime());
-=======
+    }
     //
     // @Test
     // public void hello() {}
@@ -185,6 +170,5 @@ public class UnittestenTimeTest {
         Assert.assertEquals("Should be -1", -1,testtime.compareTo(comparetime));
         comparetime = new Time(2015,8,23,22,22);
         Assert.assertEquals("Should be 0", 0,testtime.compareTo(comparetime));
->>>>>>> origin/master
     }
 }
