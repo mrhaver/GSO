@@ -83,8 +83,7 @@ public class UnittestenTimeTest {
     @Test
     public void testTimeSpanBeginTime(){
         Time bt2 = new Time(1996, 1, 15, 9, 15);
-        
-        
+               
         Assert.assertTrue("Begintijd is niet hetzelfde", ts.getBeginTime().compareTo(bt2) == 0);
     }
     
@@ -112,13 +111,81 @@ public class UnittestenTimeTest {
         Assert.assertEquals("Lengte klopt niet", actueleLengte, expectedLengte);
     }
     
-    public void testTimeSpanSetBeginTime(){
-        Time btNieuw = new Time(1996, 1, 15, 9, 1);
+    @Test
+    public void testTimeSpanSetBeginTime(){    
+        Time nieuwBT = new Time(1996, 1, 15, 9, 14);
+        ts.setBeginTime(nieuwBT);
         
-        ts.setBeginTime(btNieuw);
-        
-        Assert.assertEquals("Begintijd niet goed geset" , bt, ts.getBeginTime());
+        Assert.assertTrue("Begintijd niet goed geset", ts.getBeginTime().compareTo(nieuwBT) == 0);   
     }
+    
+    @Test (expected = IllegalArgumentException.class)
+    public void testTimeSpanSetBeginTimeException(){    
+        Time nieuwBT = new Time(1996, 1, 15, 9, 25);
+        ts.setBeginTime(nieuwBT);    
+    }
+    
+    @Test
+    public void testTimeSpanSetEndTime(){    
+        Time nieuwET = new Time(1996, 1, 15, 9, 16);
+        ts.setEndTime(nieuwET);
+        
+        Assert.assertTrue("Eindtijd niet goed geset", ts.getEndTime().compareTo(nieuwET) == 0);   
+    }
+    
+    @Test (expected = IllegalArgumentException.class)
+    public void testTimeSpanSetEndTimeException(){    
+        Time nieuwET = new Time(1996, 1, 15, 9, 10);
+        ts.setEndTime(nieuwET);    
+    }
+    
+    @Test
+    public void testTimeSpanMove(){
+        ts.move(10);
+        TimeSpan nieuwTS = new TimeSpan(new Time(1996, 1, 15, 9, 25), new Time(1996, 1, 15, 9, 30));
+        
+        Assert.assertTrue("Begintijd niet goed verplaatst", ts.getBeginTime().compareTo(nieuwTS.getBeginTime()) == 0);
+        Assert.assertTrue("Eindtijd niet goed verplaatst", ts.getEndTime().compareTo(nieuwTS.getEndTime()) == 0);
+    }
+    
+    @Test
+    public void testTimeSpanChangeLength() {
+        ts.changeLengthWith(10);
+        int expectedLength = 15;
+        
+        Assert.assertEquals("Niet de juiste lengte toegevoegd", expectedLength, ts.length());
+    }
+    
+    @Test (expected = IllegalArgumentException.class)
+    public void testTimeSpanChangeLengthException() {
+        ts.changeLengthWith(-10);
+        ts.changeLengthWith(0);
+    }
+    
+    @Test
+    public void testTimeSpanIsPartOf() {
+        TimeSpan ts2 = new TimeSpan(new Time(1996, 1, 15, 9, 16), new Time(1996, 1, 15, 9, 17));
+        Assert.assertEquals("ts2 zou deel van ts moeten zijn", true, ts.isPartOf(ts2));
+        ts2 = new TimeSpan(new Time(1996, 1, 15, 9, 14), new Time(1996, 1, 15, 9, 17));
+        Assert.assertEquals("ts2 is geen deel van ts", false, ts.isPartOf(ts2));
+        ts2 = new TimeSpan(new Time(1996, 1, 15, 9, 16), new Time(1996, 1, 15, 9, 50));
+        Assert.assertEquals("ts2 is geen deel van ts", false, ts.isPartOf(ts2));
+    }
+    
+    @Test
+    public void testTimeSpanUnionWith() {
+        /**
+        TimeSpan timeSpan1 = new TimeSpan(new Time(1996, 1, 15, 9, 15), new Time(1996, 1, 15, 9, 20));
+        TimeSpan timeSpan2 = new TimeSpan(new Time(1996, 1, 15, 9, 12), new Time(1996, 1, 15, 9, 16));
+        TimeSpan expected = new TimeSpan(new Time(1996, 1, 15, 9, 15), new Time(1996, 1, 15, 9, 16));
+        TimeSpan unionTS;
+        
+        unionTS = timeSpan1.unionWith(timeSpan2);
+        
+        Assert.assertEquals("Timespan moet gelijk zijn", expected, unionTS);
+        */ 
+    }
+    
     //
     // @Test
     // public void hello() {}
