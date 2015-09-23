@@ -98,30 +98,11 @@ public class TimeSpan implements ITimeSpan {
 
     @Override
     public TimeSpan unionWith(ITimeSpan timeSpan) {
-        if (bt.compareTo(timeSpan.getEndTime()) > 0 || et.compareTo(timeSpan.getBeginTime()) < 0) {
+        // frank: als de begintijd NA de eindtijd is of de eindtijd voor de begintijd van [timeSpan] is
+        // retourneer dan null want er zijn geen overeenkomsten
+        if (bt.compareTo(timeSpan.getEndTime()) < 0 || et.compareTo(timeSpan.getBeginTime()) > 0) {
             return null;
-        }
-        
-        ITime begintime, endtime;
-        if (bt.compareTo(timeSpan.getBeginTime()) < 0) {
-            begintime = bt;
-        } else {
-            begintime = timeSpan.getBeginTime();
-        }
-
-        if (et.compareTo(timeSpan.getEndTime()) > 0) {
-            endtime = et;
-        } else {
-            endtime = timeSpan.getEndTime();
-        }
-
-        return new TimeSpan(begintime, endtime);
-
-    }
-
-    @Override
-    public TimeSpan intersectionWith(ITimeSpan timeSpan) {
-
+        }        
         ITime begintime, endtime;
         if (bt.compareTo(timeSpan.getBeginTime()) > 0) {
             begintime = bt;
@@ -135,7 +116,30 @@ public class TimeSpan implements ITimeSpan {
             endtime = timeSpan.getEndTime();
         }
 
-        if (begintime.compareTo(endtime) >= 0) {
+        return new TimeSpan(begintime, endtime);
+
+    }
+
+    @Override
+    public TimeSpan intersectionWith(ITimeSpan timeSpan) {
+
+        ITime begintime, endtime;
+        // Frank: als begintijd2 < bt dan wordt bt de begintijd 
+        if (bt.compareTo(timeSpan.getBeginTime()) < 0) {
+            begintime = bt;
+        } else {
+            begintime = timeSpan.getBeginTime();
+        }
+        
+        // Frank: als eindtijd2 > et dan wordt et de eindtijd
+        if (et.compareTo(timeSpan.getEndTime()) > 0) {
+            endtime = et;
+        } else {
+            endtime = timeSpan.getEndTime();
+        }
+
+        // Frank: als eindtijd >= begintime dan null returnen
+        if (begintime.compareTo(endtime) <= 0) {
             return null;
         }
 
