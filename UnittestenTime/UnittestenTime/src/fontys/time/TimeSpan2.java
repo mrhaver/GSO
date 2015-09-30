@@ -19,7 +19,7 @@ public class TimeSpan2 implements ITimeSpan {
      * always positive
      * 
      */
-    private ITime bt, et;
+    private ITime bt;
     private long duur;
     
     /**
@@ -30,10 +30,9 @@ public class TimeSpan2 implements ITimeSpan {
     public TimeSpan2(ITime bt, ITime et) {
         if (bt.compareTo(et) <= 0) {
             throw new IllegalArgumentException("begin time "
-                    + bt + " must be earlier than end time " + et);
+                    + bt + " must be earlier than end time " + bt.plus((int)duur));
         }
         this.bt = bt;
-        this.et = et;
         duur = bt.difference(et);
     }
 
@@ -44,19 +43,19 @@ public class TimeSpan2 implements ITimeSpan {
 
     @Override
     public ITime getEndTime() {
-        return et;
+        return bt.plus((int)duur);
     }
 
     @Override
     public int length() {
-        return et.difference(bt);
+        return (int)duur;
     }
 
     @Override
     public void setBeginTime(ITime beginTime) {
-        if (beginTime.compareTo(et) <= 0) {
+        if (beginTime.compareTo(bt.plus((int)duur)) <= 0) {
             throw new IllegalArgumentException("begin time "
-                    + bt + " must be earlier than end time " + et);
+                    + bt + " must be earlier than end time " + bt.plus((int)duur));
         }
 
         bt = beginTime;
@@ -66,16 +65,15 @@ public class TimeSpan2 implements ITimeSpan {
     public void setEndTime(ITime endTime) {
         if (endTime.compareTo(bt) >= 0) {
             throw new IllegalArgumentException("end time "
-                    + et + " must be later then begin time " + bt);
+                    + bt.plus((int)duur) + " must be later then begin time " + bt);
         }
 
-        et = endTime;
+        duur = bt.difference(endTime);
     }
 
     @Override
     public void move(int minutes) {
         bt = bt.plus(minutes);
-        et = et.plus(minutes);
     }
 
     @Override
@@ -84,7 +82,7 @@ public class TimeSpan2 implements ITimeSpan {
             throw new IllegalArgumentException("length of period must be positive");
         }
         
-        et = et.plus(minutes);
+        duur += minutes;
     }
 
     
@@ -102,7 +100,7 @@ public class TimeSpan2 implements ITimeSpan {
     public TimeSpan2 unionWith(ITimeSpan timeSpan) {
         // frank: als de begintijd NA de eindtijd is of de eindtijd voor de begintijd van [timeSpan] is
         // retourneer dan null want er zijn geen overeenkomsten
-        if (bt.compareTo(timeSpan.getEndTime()) < 0 || et.compareTo(timeSpan.getBeginTime()) > 0) {
+        if (bt.compareTo(timeSpan.getEndTime()) < 0 || getEndTime().compareTo(timeSpan.getBeginTime()) > 0) {
             return null;
         }        
         ITime begintime, endtime;
@@ -112,8 +110,8 @@ public class TimeSpan2 implements ITimeSpan {
             begintime = timeSpan.getBeginTime();
         }
 
-        if (et.compareTo(timeSpan.getEndTime()) < 0) {
-            endtime = et;
+        if (getEndTime().compareTo(timeSpan.getEndTime()) < 0) {
+            endtime = getEndTime();
         } else {
             endtime = timeSpan.getEndTime();
         }
@@ -134,8 +132,8 @@ public class TimeSpan2 implements ITimeSpan {
         }
         
         // Frank: als eindtijd2 > et dan wordt et de eindtijd
-        if (et.compareTo(timeSpan.getEndTime()) > 0) {
-            endtime = et;
+        if (getEndTime().compareTo(timeSpan.getEndTime()) > 0) {
+            endtime = getEndTime();
         } else {
             endtime = timeSpan.getEndTime();
         }

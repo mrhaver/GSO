@@ -60,10 +60,12 @@ public class Appointment {
             }
         }
         this.genodigden.add(c);
+        c.addAppointment(this);
         return true;        
     }
     
     public void removeContact(Contact c){
         this.genodigden.remove(c);
+        c.removeAppointment(this);
     }
 }
