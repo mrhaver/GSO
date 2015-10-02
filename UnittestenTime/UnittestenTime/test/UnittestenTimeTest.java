@@ -289,6 +289,10 @@ public class UnittestenTimeTest {
     }
     // einde Frank
        
+    /**
+     * @author Alex Ras
+     * Test alle punten in de constructor waar een exceptie opgegooid kan worden.
+     */
     @Test (expected = IllegalArgumentException.class)
     public void TestConstructorMonthException(){
         Time t = new Time(1995,0,22,22,22);
@@ -309,6 +313,10 @@ public class UnittestenTimeTest {
         Time t = new Time(1995,5,22,22,-1);
     }
     
+    /**
+     * @author Alex Ras
+     * Test voor iedere dag in de week, of de juiste dag wordt teruggegeven.
+     */
     @Test
     public void TestTimeGetDayInWeek(){
         Assert.assertEquals("Day is supposed to be Wedsnesday, but it is " + testtime.getDayInWeek().name(),DayInWeek.WED,testtime.getDayInWeek());
@@ -326,6 +334,10 @@ public class UnittestenTimeTest {
         Assert.assertEquals("Day is supposed to be Saturday, but it is " + testtime.getDayInWeek().name(),DayInWeek.SAT,testtimesat.getDayInWeek());
     }
     
+    /**
+     * @author Alex Ras
+     * Test of de juiste tijdwaarden worden teruggegeven.
+     */
     @Test
     public void TestTimeGet(){
         Assert.assertEquals("Year should be 2015", 2015,testtime.getYear());
@@ -335,12 +347,20 @@ public class UnittestenTimeTest {
         Assert.assertEquals("Minutes should be 22",22,testtime.getMinutes());
     }
     
+    /**
+     * @author Alex Ras
+     * Test of de tijd daadwerkelijk wordt verhoogd met 1 minuut wanneer plus() wordt aangeroepen
+     */
     @Test
     public void TestTimePlus(){
         ITime plus = testtime.plus(1);
         Assert.assertEquals("Minutes should be 23", 23,plus.getMinutes());
     }
     
+    /**
+     * @author Alex Ras
+     * Test of de tijd juist wordt vergeleken met een andere tijd.
+     */
     @Test
     public void TestTimeCompareTo(){
         Time comparetime = new Time(2015,8,23,22,40);
@@ -351,6 +371,10 @@ public class UnittestenTimeTest {
         Assert.assertEquals("Should be 0", 0,testtime.compareTo(comparetime));
     }
     
+    /**
+     * @author Alex Ras
+     * Test of het juiste verschil wordt teruggegeven door de difference() methode
+     */
     @Test
     public void TestTimeDifference(){
         Time comparetime = new Time(2015,8,23,22,40);
