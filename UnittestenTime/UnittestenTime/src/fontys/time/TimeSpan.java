@@ -88,10 +88,6 @@ public class TimeSpan implements ITimeSpan {
     
     @Override
     public boolean isPartOf(ITimeSpan timeSpan) {
-        //if((timeSpan.getBeginTime().compareTo(this.getBeginTime()) >= 0 && timeSpan.getBeginTime().compareTo(this.getEndTime()) <=0) || 
-                //(timeSpan.getEndTime().compareTo(this.getBeginTime()) >=0 && timeSpan.getEndTime().compareTo(this.getEndTime()) <= 0)) {
-            //return true;
-        //}
         return (getBeginTime().compareTo(timeSpan.getBeginTime()) >= 0
                 && getEndTime().compareTo(timeSpan.getEndTime()) <= 0);
     }

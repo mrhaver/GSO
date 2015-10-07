@@ -52,9 +52,6 @@ public class Appointment {
      */
     public boolean addContact(Contact c){
         for(Appointment a : c.Agenda()){
-            /* 
-            als de begintijd of de eindtijd tussen de begintijd van 
-            */
             if(a.getTimeSpan().intersectionWith(this.timeSpan) != null){
                 return false;
             }
