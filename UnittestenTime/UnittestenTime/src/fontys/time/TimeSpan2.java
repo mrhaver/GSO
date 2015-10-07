@@ -51,13 +51,22 @@ public class TimeSpan2 implements ITimeSpan {
         return (int)duur;
     }
 
+    /*
+    als de huidige begintijd(bt) eerder komt dan de huidige begintijd(bt) dan wordt de duur langer,
+    als de huidige begintijd(bt) later komt dan de huidige begintijd(bt) dan wordt de duur korter
+    */
     @Override
     public void setBeginTime(ITime beginTime) {
         if (beginTime.compareTo(bt.plus((int)duur)) <= 0) {
             throw new IllegalArgumentException("begin time "
                     + bt + " must be earlier than end time " + bt.plus((int)duur));
+        }       
+        if(beginTime.compareTo(bt) > 0){
+            duur += beginTime.difference(bt);
         }
-
+        else{
+            duur -= beginTime.difference(bt);
+        }
         bt = beginTime;
     }
 

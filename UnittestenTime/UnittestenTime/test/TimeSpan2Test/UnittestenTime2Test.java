@@ -120,14 +120,18 @@ public class UnittestenTime2Test {
     /**
      * @author Frank Haver
      * Test of de werkelijk gesette begintijd hetzelfde is als de 
-     * begintijd die je wilt gaan setten.
+     * begintijd die je wilt gaan setten. Test daarna ook de eindtijd
      */
     @Test
     public void testTimeSpanSetBeginTime(){    
         Time nieuwBT = new Time(1996, 1, 15, 9, 14);
         ts2.setBeginTime(nieuwBT);
-        
-        Assert.assertTrue("Begintijd niet goed geset", ts2.getBeginTime().compareTo(nieuwBT) == 0);   
+        Assert.assertTrue("Begintijd niet goed geset", ts2.getBeginTime().compareTo(nieuwBT) == 0);
+        Time eindTijd = new Time(1996, 1, 15, 9, 20);
+        Assert.assertTrue("Eindtijd niet juist", ts2.getEndTime().compareTo(eindTijd) == 0);
+        nieuwBT = new Time(1996,1,15,9,16);
+        ts2.setBeginTime(nieuwBT);
+        Assert.assertTrue("Eindtijd niet juist", ts2.getEndTime().compareTo(eindTijd) == 0);       
     }
     
     /**
