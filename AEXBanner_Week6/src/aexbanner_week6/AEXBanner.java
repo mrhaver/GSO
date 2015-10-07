@@ -7,6 +7,7 @@ package aexbanner_week6;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -32,7 +33,6 @@ public class AEXBanner extends Application {
     public void start(Stage primaryStage) {
 
         controller = new BannerController(this);
-        mock = new MockEffectenbeurs();
         Font font = new Font("Arial", HEIGHT);
         text = new Text();
         text.setFont(font);
@@ -58,9 +58,13 @@ public class AEXBanner extends Application {
                 if (lag >= NANO_TICKS) {
                     // calculate new location of text
                     // TODO
-                    textPosition = textPosition -3;
-                        text.relocate(textPosition,0);
-			prevUpdate = now;
+                    textPosition = textPosition -6;
+                    
+                    if(textPosition < -textLength){
+                        textPosition = WIDTH; 
+                    }
+                    text.relocate(textPosition,0);
+                    prevUpdate = now;
                 }
             }
             @Override
@@ -68,12 +72,8 @@ public class AEXBanner extends Application {
                 prevUpdate = System.nanoTime();
                 textPosition = WIDTH;
                 text.relocate(textPosition, 0);
-                String koersen = "";
-                for(IFonds i : mock.getKoersen()){
-                    koersen = koersen + i.getNaam() + ": " + String.valueOf(i.getKoers()) + " ";
-                }
-                setKoersen(koersen);
                 super.start();
+                
             }
         };
         // hier stond timer.start() maar er is geen object timer..
@@ -81,8 +81,14 @@ public class AEXBanner extends Application {
     }
 
     public void setKoersen(String koersen) {
-        text.setText(koersen);
-        textLength = text.getLayoutBounds().getWidth();
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                text.setText(koersen);
+                textLength = text.getLayoutBounds().getWidth();            }
+            
+        });
+        
     }
 
     @Override

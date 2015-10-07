@@ -28,4 +28,8 @@ public class Fonds implements IFonds{
         return koers;
     }
     
+    public void setKoers(double value){
+        koers = value;
+    }
+    
 }

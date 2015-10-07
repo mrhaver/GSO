@@ -23,4 +23,11 @@ public interface IFonds {
      * @return Geeft de koers terug van een beursgenoteerd bedrijfs
      */
     public double getKoers();
+    
+    /**
+     * @Author Frank Haver
+     * Set the value of the koers
+     * @param value the value of the new koers
+     */
+    public void setKoers(double value);
 }

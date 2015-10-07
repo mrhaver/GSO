@@ -21,13 +21,13 @@ public class MockEffectenbeurs implements IEffectenbeurs{
     @Override
     public ArrayList<IFonds> getKoersen() {
         Random random = new Random();
-        int randomint = random.nextInt(100);
+        double randomDouble = (double)Math.round((5 + (100 - 5) * random.nextDouble()) * 100d) / 100d;
         ArrayList<IFonds> fonds = new ArrayList<>();
-        fonds.add(new Fonds("ASML",randomint));
-        randomint = random.nextInt();
-        fonds.add(new Fonds("Shell",randomint));
-        randomint = random.nextInt();
-        fonds.add(new Fonds("Philips",randomint));
+        fonds.add(new Fonds("ASML",randomDouble));
+        randomDouble = (double)Math.round((5 + (100 - 5) * random.nextDouble()) * 100d) / 100d;
+        fonds.add(new Fonds("Shell",randomDouble));
+        randomDouble = (double)Math.round((5 + (100 - 5) * random.nextDouble()) * 100d) / 100d;
+        fonds.add(new Fonds("Philips",randomDouble));
         return fonds;
     }
     
