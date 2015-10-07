@@ -26,12 +26,13 @@ public class AEXBanner extends Application {
     private double textPosition;
     private BannerController controller;
     private AnimationTimer animationTimer;
+    private MockEffectenbeurs mock;
 
     @Override
     public void start(Stage primaryStage) {
 
         controller = new BannerController(this);
-
+        mock = new MockEffectenbeurs();
         Font font = new Font("Arial", HEIGHT);
         text = new Text();
         text.setFont(font);
@@ -57,6 +58,7 @@ public class AEXBanner extends Application {
                 if (lag >= NANO_TICKS) {
                     // calculate new location of text
                     // TODO
+                    textPosition = textPosition -3;
                         text.relocate(textPosition,0);
 			prevUpdate = now;
                 }
@@ -66,7 +68,11 @@ public class AEXBanner extends Application {
                 prevUpdate = System.nanoTime();
                 textPosition = WIDTH;
                 text.relocate(textPosition, 0);
-                setKoersen("Nothing to display");
+                String koersen = "";
+                for(IFonds i : mock.getKoersen()){
+                    koersen = koersen + i.getNaam() + ": " + String.valueOf(i.getKoers()) + " ";
+                }
+                setKoersen(koersen);
                 super.start();
             }
         };
