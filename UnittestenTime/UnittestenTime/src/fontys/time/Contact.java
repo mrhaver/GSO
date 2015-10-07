@@ -39,12 +39,6 @@ public class Contact {
     protected boolean addAppointment(Appointment a){
         // Frank: Deze code is niet nodig omdat dezelfde check wordt gedaan in addContact() in de klasse appointment
         // dus deze methode retourneert altijd true
-        
-//        for(Appointment ap : agenda){
-//            if(ap.getTimeSpan().intersectionWith(a.getTimeSpan()) != null){
-//                return false;
-//            }
-//        }
         agenda.add(a);
         return true;
     }

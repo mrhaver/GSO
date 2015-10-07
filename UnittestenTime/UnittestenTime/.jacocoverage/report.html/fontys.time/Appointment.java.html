@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Appointment.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;UnittestenTime&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">fontys.time</a> &gt; <span class="el_source">Appointment.java</span></div><h1>Appointment.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package fontys.time;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+/**
+ *
+ * @author Frank Haver
+ * Klasse bevat een onderwerp en heeft 1 timespan object.
+ * Ook heeft deze klasse een lijst van contacten.
+ * In deze klassse is het mogelijk om contacten toe te voegen en verwijderen
+ */
+public class Appointment {
+    
+    private String onderwerp;
+    private ITimeSpan timeSpan;
+    private ArrayList&lt;Contact&gt; genodigden;
+    
+<span class="fc" id="L24">    public Appointment(String onderwerp, ITimeSpan timeSpan){</span>
+<span class="fc" id="L25">        this.onderwerp = onderwerp;</span>
+<span class="fc" id="L26">        this.timeSpan = timeSpan;</span>
+<span class="fc" id="L27">        genodigden = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L28">    }</span>
+    
+    public String getOnderwerp(){
+<span class="fc" id="L31">        return this.onderwerp;</span>
+    }
+    
+    public ITimeSpan getTimeSpan(){
+<span class="fc" id="L35">        return this.timeSpan;</span>
+    }
+    
+    public ArrayList&lt;Contact&gt; Genodigden(){
+<span class="fc" id="L39">        return this.genodigden;</span>
+    }
+    
+    /**
+     * @Author Frank Haver
+     * Toevoegen van een contact mag alleen maar doorgang vinden als een 
+     * Contact object toe te voegen als de timespan van deze afspraak niet overlapt
+     * met een van de andere aspraken van dit meegegeven contact.
+     * @param c
+     * Contact c is de nieuwe contact die toegevoegd gaat worden
+     * @return 
+     * retourneert false als er overlap is met een andere afspraak 
+     * retourneert true als het contact toegevoegd wordt aan de afspraak
+     */
+    public boolean addContact(Contact c){
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        for(Appointment a : c.Agenda()){</span>
+            /* 
+            als de begintijd of de eindtijd tussen de begintijd van 
+            */
+<span class="fc bfc" id="L58" title="All 2 branches covered.">            if(a.getTimeSpan().intersectionWith(this.timeSpan) != null){</span>
+<span class="fc" id="L59">                return false;</span>
+            }
+<span class="fc" id="L61">        }</span>
+<span class="fc" id="L62">        this.genodigden.add(c);</span>
+<span class="fc" id="L63">        c.addAppointment(this);</span>
+<span class="fc" id="L64">        return true;        </span>
+    }
+    
+    public void removeContact(Contact c){
+<span class="fc" id="L68">        this.genodigden.remove(c);</span>
+<span class="fc" id="L69">        c.removeAppointment(this);</span>
+<span class="fc" id="L70">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
