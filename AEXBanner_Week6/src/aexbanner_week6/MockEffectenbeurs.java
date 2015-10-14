@@ -18,6 +18,7 @@ public class MockEffectenbeurs implements IEffectenbeurs{
     public MockEffectenbeurs(){
         
     }
+    
     @Override
     public ArrayList<IFonds> getKoersen() {
         Random random = new Random();
