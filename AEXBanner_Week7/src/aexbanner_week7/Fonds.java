@@ -5,11 +5,13 @@
  */
 package aexbanner_week7;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Alex Ras
  */
-public class Fonds implements IFonds{
+public class Fonds implements IFonds, Serializable{
 
     private String naam;
     private double koers;
