@@ -5,6 +5,8 @@
  */
 package aexbanner_week7;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,15 +15,16 @@ import java.util.Random;
  *
  * @author Frank Haver
  */
-public class MockEffectenbeurs implements IEffectenbeurs{
+public class MockEffectenbeurs extends UnicastRemoteObject implements IEffectenbeurs  {
 
     private ArrayList<IFonds> koersen;
     
-    public MockEffectenbeurs(){
+    public MockEffectenbeurs() throws RemoteException{
         koersen = new ArrayList<>();
     }
+    
     @Override
-    public ArrayList<IFonds> getKoersen() {
+    public ArrayList<IFonds> getKoersen() throws RemoteException{
         Random random = new Random();
         double randomDouble = (double)Math.round((5 + (100 - 5) * random.nextDouble()) * 100d) / 100d;
         koersen.add(new Fonds("ASML",randomDouble));
