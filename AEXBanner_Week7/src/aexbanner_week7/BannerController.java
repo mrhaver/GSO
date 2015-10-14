@@ -36,7 +36,7 @@ public class BannerController {
         pollingTimer = new Timer();
         
         fluctuatieTimer = new Timer();
-        fluctuatieTimer.schedule(new FluctuatieTask(), 0,2000);
+        
         // TODO 
         
         // Print IP address and port number for registry
@@ -82,10 +82,22 @@ public class BannerController {
 
         // Print result binding student administration
         if (effectenbeurs != null) {
-            System.out.println("Client: effectenbeurs bound");
+            System.out.println("Client: effectenbeurs bound");           
+            
         } else {
             System.out.println("Client: effectenbeurs is null pointer");
         }
+        
+        try{
+            huidigeKoersen = effectenbeurs.getKoersen();
+            fluctuatieTimer.schedule(new FluctuatieTask(), 0,2000);
+        }
+        catch(RemoteException ex){
+            System.out.println(ex.getMessage());
+        }
+        
+        
+        
     }
     
     // Print contents of registry

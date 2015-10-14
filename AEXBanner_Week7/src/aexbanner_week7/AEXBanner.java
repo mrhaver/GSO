@@ -96,5 +96,8 @@ public class AEXBanner extends Application {
         animationTimer.stop();
         controller.stop();
     }
+    
+    public static void main(String[] args) {
+    }
 }
 
