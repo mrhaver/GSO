@@ -40,15 +40,5 @@ $RECYCLE.BIN/
 .AppleDesktop
 Network Trash Folder
 Temporary Items
-.apdisk
-/UnittestenTime/UnittestenTime/nbproject/private/
-/UnittestenTime/UnittestenTime/build/
-/UnittestenTime/UnittestenTime/dist/
-/AEXBanner_Week6/nbproject/private/
-/AEXBanner_Week6/build/
-/AEXBanner_Week6/dist/
-AEXBanner_Week7/nbproject/private/private.xml
-AEXBanner_Week7/nbproject/project.xml
-*.properties
-*.xml
-AEXBanner_Week7/manifest.mf
+/AEXBanner_Week7/build/
+/AEXBanner_Week7/dist/

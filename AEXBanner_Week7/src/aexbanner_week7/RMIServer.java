@@ -10,5 +10,5 @@ package aexbanner_week7;
  * @author Frank Haver
  */
 public class RMIServer {
-    
+    //shitzooi
 }

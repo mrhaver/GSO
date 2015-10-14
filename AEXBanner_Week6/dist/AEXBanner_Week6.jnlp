@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="AEXBanner_Week6.jnlp">
+  <information>
+    <title>AEXBanner_Week6</title>
+    <vendor>Frank Haver</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="AEXBanner_Week6.jar" size="8223" download="eager" />
+  </resources>
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="AEXBanner_Week6" >
+    <param name="requiredFXVersion" value="8.0+"/>
+  </applet-desc>
+  <jfx:javafx-desc  width="800" height="600" main-class="aexbanner_week6.AEXBanner"  name="AEXBanner_Week6" />
+  <update check="always"/>
+</jnlp>
