@@ -32,7 +32,7 @@ public class AEXBanner extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        controller = new BannerController(this);
+        controller = new BannerController(this, "localhost", 1099);
         Font font = new Font("Arial", HEIGHT);
         text = new Text();
         text.setFont(font);

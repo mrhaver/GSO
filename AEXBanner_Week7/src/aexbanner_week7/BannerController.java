@@ -5,6 +5,10 @@
  */
 package aexbanner_week7;
 
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
@@ -15,17 +19,18 @@ import java.util.TimerTask;
  */
 public class BannerController {
 
-    private AEXBanner banner;
-    private MockEffectenbeurs effectenbeurs;
+    private AEXBanner banner;    
     private Timer pollingTimer;
     private Timer fluctuatieTimer;
     private ArrayList<IFonds> huidigeKoersen;
+    
+    private static final String bindingName = "Effectenbeurs";
+    private Registry registry = null;
+    private IEffectenbeurs effectenbeurs = null;
 
-    public BannerController(AEXBanner banner) {
+    public BannerController(AEXBanner banner, String ipAddress, int portNumber) {
 
         this.banner = banner;
-        this.effectenbeurs = new MockEffectenbeurs();
-        huidigeKoersen = effectenbeurs.getKoersen();
         
         // Start polling timer: update banner every two seconds
         pollingTimer = new Timer();
@@ -33,6 +38,72 @@ public class BannerController {
         fluctuatieTimer = new Timer();
         fluctuatieTimer.schedule(new FluctuatieTask(), 0,2000);
         // TODO 
+        
+        // Print IP address and port number for registry
+        System.out.println("Client: IP Address: " + ipAddress);
+        System.out.println("Client: Port number " + portNumber);
+
+        // Locate registry at IP address and port number
+        try {
+            registry = LocateRegistry.getRegistry(ipAddress, portNumber);
+        } catch (RemoteException ex) {
+            System.out.println("Client: Cannot locate registry");
+            System.out.println("Client: RemoteException: " + ex.getMessage());
+            registry = null;
+        }
+
+        // Print result locating registry
+        if (registry != null) {
+            System.out.println("Client: Registry located");
+        } else {
+            System.out.println("Client: Cannot locate registry");
+            System.out.println("Client: Registry is null pointer");
+        }
+
+        // Print contents of registry
+        if (registry != null) {
+            printContentsRegistry();
+        }
+
+        // Bind student administration using registry
+        if (registry != null) {
+            try {
+                effectenbeurs = (IEffectenbeurs) registry.lookup(bindingName);
+            } catch (RemoteException ex) {
+                System.out.println("Client: Cannot bind effectenbeurs");
+                System.out.println("Client: RemoteException: " + ex.getMessage());
+                effectenbeurs = null;
+            } catch (NotBoundException ex) {
+                System.out.println("Client: Cannot bind effectenbeurs");
+                System.out.println("Client: NotBoundException: " + ex.getMessage());
+                effectenbeurs = null;
+            }
+        }
+
+        // Print result binding student administration
+        if (effectenbeurs != null) {
+            System.out.println("Client: effectenbeurs bound");
+        } else {
+            System.out.println("Client: effectenbeurs is null pointer");
+        }
+    }
+    
+    // Print contents of registry
+    private void printContentsRegistry() {
+        try {
+            String[] listOfKoers = registry.list();
+            System.out.println("Client: list of koersen bound in registry:");
+            if (listOfKoers.length != 0) {
+                for (String s : registry.list()) {
+                    System.out.println(s);
+                }
+            } else {
+                System.out.println("Client: list of koersen bound in registry is empty");
+            }
+        } catch (RemoteException ex) {
+            System.out.println("Client: Cannot show list of koersen bound in registry");
+            System.out.println("Client: RemoteException: " + ex.getMessage());
+        }
     }
     
     class FluctuatieTask extends TimerTask{
