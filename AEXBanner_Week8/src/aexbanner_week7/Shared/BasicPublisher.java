@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  * Remote and objects of this class work locally within the same virtual
  * machine;
  */
-public class BasicPublisher {
+public class BasicPublisher implements RemotePublisher{
 
     /**
      * de listeners die onder de null-String staan geregistreerd zijn listeners
