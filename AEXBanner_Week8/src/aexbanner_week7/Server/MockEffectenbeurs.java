@@ -65,7 +65,7 @@ public class MockEffectenbeurs extends UnicastRemoteObject implements RemotePubl
             // fluctueer de huidige koersen
             // verander met minimaal 0 en maximaal 5% van de koers
             // kan negatief of positief zijn.
-            Random rnd = new Random(); 
+            Random rnd = new Random();
             for(IFonds ifo : koersen){
                 double rangeMin = 0;
                 double rangeMax = ifo.getKoers()/20d;
@@ -81,7 +81,7 @@ public class MockEffectenbeurs extends UnicastRemoteObject implements RemotePubl
                 }
                 ifo.setKoers(nieuwWaarde);                
             }
-            
+            basicPublisher.inform(this,"koersen",null,koersen);
             
         }
         
