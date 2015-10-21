@@ -31,21 +31,23 @@ public class MockEffectenbeurs extends UnicastRemoteObject implements RemotePubl
     private BasicPublisher basicPublisher;
     
     public MockEffectenbeurs() throws RemoteException{
-        koersen = new ArrayList<>();
         koersen = getKoersen();
+        basicPublisher = new BasicPublisher(new String[]{"koersen"});
         fluctuatieTimer = new Timer();
         fluctuatieTimer.schedule(new FluctuatieTask(), 0,2000);
+        
     }
     
     public ArrayList<IFonds> getKoersen() throws RemoteException{
+        ArrayList<IFonds> eersteKoersen = new ArrayList<>();
         Random random = new Random();
         double randomDouble = (double)Math.round((5 + (100 - 5) * random.nextDouble()) * 100d) / 100d;
-        koersen.add(new Fonds("ASML",randomDouble));
+        eersteKoersen.add(new Fonds("ASML",randomDouble));
         randomDouble = (double)Math.round((5 + (100 - 5) * random.nextDouble()) * 100d) / 100d;
-        koersen.add(new Fonds("Shell",randomDouble));
+        eersteKoersen.add(new Fonds("Shell",randomDouble));
         randomDouble = (double)Math.round((5 + (100 - 5) * random.nextDouble()) * 100d) / 100d;
-        koersen.add(new Fonds("Philips",randomDouble));
-        return koersen;
+        eersteKoersen.add(new Fonds("Philips",randomDouble));
+        return eersteKoersen;
     }
 
     @Override
