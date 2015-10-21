@@ -1,4 +1,4 @@
-package fontys.observer;
+package aexbanner_week7;
 
 import java.beans.*;
 import java.rmi.*;
