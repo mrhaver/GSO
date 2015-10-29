@@ -6,6 +6,12 @@
 package aexbanner_week7.Client;
 
 import aexbanner_week7.Server.MockEffectenbeurs;
+import aexbanner_week7.Shared.RemotePropertyListener;
+import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -28,10 +34,9 @@ public class AEXBanner extends Application {
     private double textPosition;
     private BannerController controller;
     private AnimationTimer animationTimer;
-    private MockEffectenbeurs mock;
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws RemoteException, NotBoundException, InstantiationException, IllegalAccessException {
 
         controller = new BannerController(this, "localhost", 1099);
         Font font = new Font("Arial", HEIGHT);
@@ -99,7 +104,7 @@ public class AEXBanner extends Application {
     }
     
     public static void main(String[] args) {
-        launch(args);
+       launch(args);
     }
 }
 

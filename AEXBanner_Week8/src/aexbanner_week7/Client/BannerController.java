@@ -8,8 +8,13 @@ package aexbanner_week7.Client;
 import aexbanner_week7.Client.AEXBanner;
 import aexbanner_week7.Shared.IEffectenbeurs;
 import aexbanner_week7.Server.IFonds;
+import aexbanner_week7.Server.MockEffectenbeurs;
+import aexbanner_week7.Shared.BasicPublisher;
 import aexbanner_week7.Shared.RemotePropertyListener;
+import aexbanner_week7.Shared.RemotePublisher;
 import java.beans.PropertyChangeEvent;
+import java.io.Serializable;
+import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -29,15 +34,18 @@ public class BannerController implements RemotePropertyListener{
     
     private static final String bindingName = "Effectenbeurs";
     private Registry registry = null;
-    private IEffectenbeurs effectenbeurs = null;
+    private MockEffectenbeurs effectenbeurs = null;
     private String ipAddress;
     private int portNumber;
 
-    public BannerController(AEXBanner banner, String ipAddress, int portNumber) {
+    public BannerController(AEXBanner banner, String ipAddress, int portNumber) throws RemoteException, NotBoundException, InstantiationException, IllegalAccessException {
 
         this.banner = banner;
         this.ipAddress = ipAddress;
         this.portNumber = portNumber;
+        registry = LocateRegistry.getRegistry(ipAddress, portNumber);
+        RemotePublisher rp = (RemotePublisher) registry.lookup("Effectenbeurs");
+        rp.addListener(this, "koersen");
     }
     
     // Print contents of registry
@@ -101,7 +109,7 @@ public class BannerController implements RemotePropertyListener{
         // Bind student administration using registry
         if (registry != null) {
             try {
-                effectenbeurs = (IEffectenbeurs) registry.lookup(bindingName);
+                effectenbeurs = (MockEffectenbeurs) registry.lookup(bindingName);
             } catch (RemoteException ex) {
                 System.out.println("Client: Cannot bind effectenbeurs");
                 System.out.println("Client: RemoteException: " + ex.getMessage());

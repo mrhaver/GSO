@@ -12,6 +12,7 @@ import aexbanner_week7.Server.Fonds;
 import aexbanner_week7.Shared.BasicPublisher;
 import aexbanner_week7.Shared.RemotePropertyListener;
 import aexbanner_week7.Shared.RemotePublisher;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ import java.util.TimerTask;
  *
  * @author Frank Haver
  */
-public class MockEffectenbeurs extends UnicastRemoteObject implements RemotePublisher  {
+public class MockEffectenbeurs extends UnicastRemoteObject implements RemotePublisher {
 
     private Timer fluctuatieTimer;
     private ArrayList<IFonds> koersen;
