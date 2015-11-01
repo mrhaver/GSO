@@ -27,7 +27,7 @@ import java.util.TimerTask;
 /**
  * @Author Frank Haver
  */
-public class BannerController implements RemotePropertyListener{
+public class BannerController implements RemotePropertyListener, Serializable{
 
     private AEXBanner banner;    
     private ArrayList<IFonds> huidigeKoersen;

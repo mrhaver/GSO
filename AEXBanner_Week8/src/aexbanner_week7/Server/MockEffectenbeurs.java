@@ -25,7 +25,7 @@ import java.util.TimerTask;
  *
  * @author Frank Haver
  */
-public class MockEffectenbeurs extends UnicastRemoteObject implements RemotePublisher {
+public class MockEffectenbeurs extends UnicastRemoteObject implements RemotePublisher, Serializable {
 
     private Timer fluctuatieTimer;
     private ArrayList<IFonds> koersen;
