@@ -7,6 +7,7 @@ package aexbanner_week7.Client;
 
 import aexbanner_week7.Server.MockEffectenbeurs;
 import aexbanner_week7.Shared.RemotePropertyListener;
+import java.io.Serializable;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -22,7 +23,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class AEXBanner extends Application {
+public class AEXBanner extends Application implements Serializable{
 
     public static final int WIDTH = 1000;
     public static final int HEIGHT = 100;

@@ -34,9 +34,10 @@ public class BannerController implements RemotePropertyListener, Serializable{
     
     private static final String bindingName = "Effectenbeurs";
     private Registry registry = null;
-    private MockEffectenbeurs effectenbeurs = null;
+    private RemotePublisher rp = null;
     private String ipAddress;
     private int portNumber;
+    private IEffectenbeurs effectenbeurs;
 
     public BannerController(AEXBanner banner, String ipAddress, int portNumber) throws RemoteException, NotBoundException, InstantiationException, IllegalAccessException {
 
@@ -44,10 +45,13 @@ public class BannerController implements RemotePropertyListener, Serializable{
         this.ipAddress = ipAddress;
         this.portNumber = portNumber;
         registry = LocateRegistry.getRegistry(ipAddress, portNumber);
-        RemotePublisher rp = (RemotePublisher) registry.lookup("Effectenbeurs");
-        rp.addListener(this, "koersen");
+        rp = (RemotePublisher) registry.lookup(bindingName);
+        addListener();
     }
     
+    private void addListener() throws RemoteException{
+        rp.addListener(this, "koersen");
+    }
     // Print contents of registry
     private void printContentsRegistry() {
         try {
@@ -109,7 +113,7 @@ public class BannerController implements RemotePropertyListener, Serializable{
         // Bind student administration using registry
         if (registry != null) {
             try {
-                effectenbeurs = (MockEffectenbeurs) registry.lookup(bindingName);
+                effectenbeurs = (IEffectenbeurs) registry.lookup(bindingName);
             } catch (RemoteException ex) {
                 System.out.println("Client: Cannot bind effectenbeurs");
                 System.out.println("Client: RemoteException: " + ex.getMessage());
