@@ -1,18 +1,11 @@
+package AEX;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package aexbanner_week7.Client;
-
-import aexbanner_week7.Server.MockEffectenbeurs;
-import aexbanner_week7.Shared.RemotePropertyListener;
-import java.io.Serializable;
-import java.rmi.AlreadyBoundException;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -23,11 +16,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class AEXBanner extends Application implements Serializable{
+public class AEXBanner extends Application {
 
     public static final int WIDTH = 1000;
     public static final int HEIGHT = 100;
-    public static final int NANO_TICKS = 20000000; 
+    public static final int NANO_TICKS = 20000000;
     // FRAME_RATE = 1000000000/NANO_TICKS = 50;
 
     private Text text;
@@ -37,9 +30,9 @@ public class AEXBanner extends Application implements Serializable{
     private AnimationTimer animationTimer;
 
     @Override
-    public void start(Stage primaryStage) throws RemoteException, NotBoundException, InstantiationException, IllegalAccessException {
+    public void start(Stage primaryStage) throws RemoteException {
 
-        controller = new BannerController(this, "localhost", 1099);
+        controller = new BannerController(this);
         Font font = new Font("Arial", HEIGHT);
         text = new Text();
         text.setFont(font);
@@ -54,7 +47,6 @@ public class AEXBanner extends Application implements Serializable{
         primaryStage.show();
         primaryStage.toFront();
 
-
         // Start animation: text moves from right to left
         animationTimer = new AnimationTimer() {
             private long prevUpdate;
@@ -65,47 +57,48 @@ public class AEXBanner extends Application implements Serializable{
                 if (lag >= NANO_TICKS) {
                     // calculate new location of text
                     // TODO
-                    textPosition = textPosition -6;
-                    
-                    if(textPosition < -textLength){
-                        textPosition = WIDTH; 
+
+                    textPosition = textPosition - 8;
+                    if (textPosition < -textLength) {
+                        textPosition = WIDTH;
+                        
                     }
-                    text.relocate(textPosition,0);
+
+                    text.relocate(textPosition, 0);
                     prevUpdate = now;
                 }
             }
+
             @Override
             public void start() {
                 prevUpdate = System.nanoTime();
                 textPosition = WIDTH;
                 text.relocate(textPosition, 0);
                 super.start();
-                
             }
+
         };
-        // hier stond timer.start() maar er is geen object timer..
         animationTimer.start();
     }
 
     public void setKoersen(String koersen) {
-        Platform.runLater(new Runnable(){
+        Platform.runLater(new Runnable() {
+
             @Override
             public void run() {
                 text.setText(koersen);
-                textLength = text.getLayoutBounds().getWidth();            }
-            
+                textLength = text.getLayoutBounds().getWidth();
+            }
         });
-        
+
     }
 
     @Override
     public void stop() {
         animationTimer.stop();
-        controller.stop();
     }
-    
+
     public static void main(String[] args) {
-       launch(args);
+        launch(args);
     }
 }
-

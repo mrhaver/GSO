@@ -1,54 +1,48 @@
+package AEX;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package aexbanner_week7.Server;
-
-import aexbanner_week7.Client.BannerController;
-import aexbanner_week7.Shared.IEffectenbeurs;
-import aexbanner_week7.Server.IFonds;
-import aexbanner_week7.Server.Fonds;
-import aexbanner_week7.Shared.BasicPublisher;
-import aexbanner_week7.Shared.RemotePropertyListener;
-import aexbanner_week7.Shared.RemotePublisher;
-import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 /**
  *
- * @author Frank Haver
+ * @author Frank
  */
-public class MockEffectenbeurs extends UnicastRemoteObject implements RemotePublisher, Serializable {
+public class MockEffectenbeurs extends UnicastRemoteObject implements IEffectenBeurs, RemotePublisher {
 
-    private Timer fluctuatieTimer;
     private ArrayList<IFonds> koersen;
+    private Timer t;
     private BasicPublisher basicPublisher;
-    
-    public MockEffectenbeurs() throws RemoteException{
+
+    public MockEffectenbeurs() throws RemoteException {
+        koersen = new ArrayList<>();
         koersen = getKoersen();
-        basicPublisher = new BasicPublisher(new String[]{"koersen"});
-        fluctuatieTimer = new Timer();
-        fluctuatieTimer.schedule(new FluctuatieTask(), 0,2000);
         
+        basicPublisher = new BasicPublisher(new String[]{"koersen"});
+        t = new Timer();
+        
+        t.schedule(new FluctuatieTask(), 0, 3000);
+
     }
-    
-    public ArrayList<IFonds> getKoersen() throws RemoteException{
-        ArrayList<IFonds> eersteKoersen = new ArrayList<>();
+
+    @Override
+    public final ArrayList<IFonds> getKoersen() {
         Random random = new Random();
         double randomDouble = (double)Math.round((5 + (100 - 5) * random.nextDouble()) * 100d) / 100d;
-        eersteKoersen.add(new Fonds("ASML",randomDouble));
+        koersen.add(new Fonds("ASML",randomDouble));
         randomDouble = (double)Math.round((5 + (100 - 5) * random.nextDouble()) * 100d) / 100d;
-        eersteKoersen.add(new Fonds("Shell",randomDouble));
+        koersen.add(new Fonds("Shell",randomDouble));
         randomDouble = (double)Math.round((5 + (100 - 5) * random.nextDouble()) * 100d) / 100d;
-        eersteKoersen.add(new Fonds("Philips",randomDouble));
-        return eersteKoersen;
+        koersen.add(new Fonds("Philips",randomDouble));
+        return koersen;
     }
 
     @Override
@@ -56,19 +50,19 @@ public class MockEffectenbeurs extends UnicastRemoteObject implements RemotePubl
         basicPublisher.addListener(listener, property);
     }
 
-    @Override
+   @Override
     public void removeListener(RemotePropertyListener listener, String property) throws RemoteException {
         basicPublisher.removeListener(listener, property);
     }
-    
-    class FluctuatieTask extends TimerTask{
+
+        class FluctuatieTask extends TimerTask{
 
         @Override
         public void run() {
             // fluctueer de huidige koersen
             // verander met minimaal 0 en maximaal 5% van de koers
             // kan negatief of positief zijn.
-            Random rnd = new Random();
+            Random rnd = new Random(); 
             for(IFonds ifo : koersen){
                 double rangeMin = 0;
                 double rangeMax = ifo.getKoers()/20d;
@@ -84,9 +78,8 @@ public class MockEffectenbeurs extends UnicastRemoteObject implements RemotePubl
                 }
                 ifo.setKoers(nieuwWaarde);                
             }
-            basicPublisher.inform(this,"koersen",null,koersen);
-            
-        }
-        
+            basicPublisher.inform(this, "koersen", null, koersen);
+        }  
     }
+
 }

@@ -1,4 +1,15 @@
-package aexbanner_week7.Shared;
+package AEX;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author Frank Haver
+ */
 
 import java.beans.*;
 import java.rmi.RemoteException;
@@ -20,7 +31,7 @@ import java.util.logging.Logger;
  * Remote and objects of this class work locally within the same virtual
  * machine;
  */
-public class BasicPublisher implements RemotePublisher{
+public class BasicPublisher implements RemotePropertyListener {
 
     /**
      * de listeners die onder de null-String staan geregistreerd zijn listeners
@@ -201,4 +212,10 @@ public class BasicPublisher implements RemotePublisher{
     public Iterator<String> getProperties() {
         return listenersTable.keySet().iterator();
     }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
+

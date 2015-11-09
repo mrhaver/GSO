@@ -143,8 +143,7 @@ public class BannerController {
             }
             
             banner.setKoersen(getHuidigeKoersString());
-        }
-        
+        }  
     }
     
     public String getHuidigeKoersString(){
