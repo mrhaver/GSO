@@ -1,4 +1,4 @@
-package AEX;
+package Shared;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -8,6 +8,7 @@ package AEX;
 
 
 
+import Server.IFonds;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package AEX;
+package Client;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

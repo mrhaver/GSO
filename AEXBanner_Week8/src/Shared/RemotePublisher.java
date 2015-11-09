@@ -1,4 +1,4 @@
-package AEX;
+package Shared;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -11,6 +11,7 @@ package AEX;
  * @author Frank Haver
  */
 
+import Shared.RemotePropertyListener;
 import java.rmi.*;
 
 /**

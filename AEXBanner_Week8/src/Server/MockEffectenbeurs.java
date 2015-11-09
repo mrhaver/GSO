@@ -1,10 +1,19 @@
-package AEX;
+package Server;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import Server.BasicPublisher;
+import Server.Fonds;
+import Server.IFonds;
+import Shared.RemotePublisher;
+import Shared.RemotePropertyListener;
+import Shared.IEffectenBeurs;
+import Shared.IEffectenBeurs;
+import Shared.RemotePropertyListener;
+import Shared.RemotePublisher;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -29,7 +38,7 @@ public class MockEffectenbeurs extends UnicastRemoteObject implements IEffectenB
         basicPublisher = new BasicPublisher(new String[]{"koersen"});
         t = new Timer();
         
-        t.schedule(new FluctuatieTask(), 0, 3000);
+        t.schedule(new FluctuatieTask(), 0, 2000);
 
     }
 

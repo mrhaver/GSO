@@ -1,4 +1,4 @@
-package AEX;
+package Shared;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
