@@ -6,26 +6,48 @@
 package bank.bankieren;
 
 import fontys.util.NumberDoesntExistException;
-import junit.framework.TestCase;
+import junit.framework.Assert;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
- * @author Alex Ras
+ * @author Frank Haver
  */
-public class IBankTest extends TestCase {
+public class IBankTest {
     
-    private Bank bank = new Bank("ABN");
+    private final Bank bank;
     
-    public IBankTest(String testName) {
-        super(testName);
+    public IBankTest() {
+        bank = new Bank("ABN");
+    }
+    
+    @BeforeClass
+    public static void setUpClass() {
+    }
+    
+    @AfterClass
+    public static void tearDownClass() {
+    }
+    
+    @Before
+    public void setUp() {
+    }
+    
+    @After
+    public void tearDown() {
     }
 
     /**
+     * @Author Alex Ras
      * Test of openRekening method, of class IBank.
      */
+    @Test
     public void testOpenRekening() {
-        System.out.println("openRekening");
-        
         String naam = "MijnRekening";
         String plaats = "MijnPlaats";
         IBank instance = (IBank) bank;
@@ -33,16 +55,17 @@ public class IBankTest extends TestCase {
         int expNr = 100000000;
         int nr = instance.openRekening(naam, plaats);
         
-        assertEquals(expNr, nr);
+        Assert.assertEquals(expNr, nr);
     }
-
-    /**
+    
+    /*
+     * @Author Alex Ras
+     * @throws fontys.util.NumberDoesntExistException 
      * Test of maakOver method, of class IBank.
      */
-    public void testMaakOver() throws Exception {
-        System.out.println("maakOver");
-        
-        Money bedrag = new Money(200,"Euro");
+    @Test
+    public void testMaakOver() throws NumberDoesntExistException {
+        Money bedrag = new Money(200,"€");
         IBank instance = (IBank) bank;
         int bron = instance.openRekening("Rekening1", "Plaats");
         int bestemming = instance.openRekening("Rekening2", "Plaats");
@@ -50,34 +73,34 @@ public class IBankTest extends TestCase {
         boolean expResult = true;
         boolean result = instance.maakOver(bron, bestemming, bedrag);
         
-        assertEquals(expResult, result);
+        Assert.assertEquals(expResult, result);
     }
-
+    
     /**
+     * @Author Alex Ras
      * Test of getRekening method, of class IBank.
      */
-    public void testGetRekening() {
-        System.out.println("getRekening");
-        
+    @Test
+    public void testGetRekening() {        
         IBank instance = (IBank) bank;
         
         int expResult = instance.openRekening("Rekening", "Plaats");
         int result = instance.getRekening(expResult).getNr();
         
-        assertEquals(expResult, result);
+        Assert.assertEquals(expResult, result);
     }
 
     /**
+     * @Author Alex Ras
      * Test of getName method, of class IBank.
      */
+    @Test
     public void testGetName() {
-        System.out.println("getName");
         IBank instance = (IBank) bank;
         
         String expResult = "ABN";
         String result = instance.getName();
         
-        assertEquals(expResult, result);
+        Assert.assertEquals(expResult, result);
     }
-    
 }

@@ -67,8 +67,7 @@ public class BalieServer extends Application {
                 out.close();
                 java.rmi.registry.LocateRegistry.createRegistry(port);
                 IBalie balie = new Balie(new Bank(nameBank));
-                Naming.rebind(nameBank, balie);
-               
+                Naming.rebind(nameBank, balie);               
                 return true;
 
             } catch (IOException ex) {

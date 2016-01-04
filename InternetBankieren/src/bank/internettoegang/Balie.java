@@ -18,8 +18,13 @@ public class Balie extends UnicastRemoteObject implements IBalie {
 		loginaccounts = new HashMap<String, ILoginAccount>();
 		//sessions = new HashSet<IBankiersessie>();
 		random = new Random();
+                
+                // Accounts for Testing reasons
+                openRekening("Frank", "Veghel", "Frank");
+                openRekening("Haver", "Veghel", "Haver");               
 	}
 
+        @Override
 	public String openRekening(String naam, String plaats, String wachtwoord) {
 		if (naam.equals(""))
 			return null;
@@ -33,15 +38,17 @@ public class Balie extends UnicastRemoteObject implements IBalie {
 		if (nr == -1)
 			return null;
 
-		String accountname = generateId(8);
-		while (loginaccounts.containsKey(accountname))
-			accountname = generateId(8);
+                // Veranderd want dat is makkelijker om te testen
+		String accountname = naam; //generateId(8);
+//		while (loginaccounts.containsKey(accountname))
+//			accountname = generateId(8);
 		loginaccounts.put(accountname, new LoginAccount(accountname,
 				wachtwoord, nr));
 
 		return accountname;
 	}
 
+        @Override
 	public IBankiersessie logIn(String accountnaam, String wachtwoord)
 			throws RemoteException {
 		ILoginAccount loginaccount = loginaccounts.get(accountnaam);

@@ -68,10 +68,7 @@ public class BalieController implements Initializable {
         }
         );
     }  
-    
-    
-    
-
+   
     @FXML
     private void selectBank(ActionEvent event) {
     }
