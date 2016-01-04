@@ -23,7 +23,7 @@ public class IBankTest {
     private final Bank bank;
     
     public IBankTest() {
-        bank = new Bank("ABN");
+        bank = new Bank("Rabobank");
     }
     
     @BeforeClass
@@ -98,7 +98,7 @@ public class IBankTest {
     public void testGetName() {
         IBank instance = (IBank) bank;
         
-        String expResult = "ABN";
+        String expResult = "Rabobank";
         String result = instance.getName();
         
         Assert.assertEquals(expResult, result);

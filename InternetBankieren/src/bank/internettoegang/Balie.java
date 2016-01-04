@@ -27,13 +27,11 @@ public class Balie extends UnicastRemoteObject implements IBalie {
         @Override
 	public String openRekening(String naam, String plaats, String wachtwoord) {
 		if (naam.equals(""))
-			return null;
+                    throw new IllegalArgumentException("Naam mag niet leeg zijn");	
 		if (plaats.equals(""))
-			return null;
-
+                    throw new IllegalArgumentException("Plaats mag niet leeg zijn");
 		if (wachtwoord.length() < 4 || wachtwoord.length() > 8)
-			return null;
-
+                    throw new IllegalArgumentException("Wachtwoord moet groter dan 4 en kleiner dan 8 karakters zijn");
 		int nr = bank.openRekening(naam, plaats);
 		if (nr == -1)
 			return null;
@@ -65,14 +63,16 @@ public class Balie extends UnicastRemoteObject implements IBalie {
 
 	private static final String CHARS = "abcdefghijklmnopqrstuvwxyz0123456789";
 
-	private String generateId(int x) {
-		StringBuilder s = new StringBuilder();
-		for (int i = 0; i < x; i++) {
-			int rand = random.nextInt(36);
-			s.append(CHARS.charAt(rand));
-		}
-		return s.toString();
-	}
+        // wordt in de testversie niet gebruikt is onhandig
+        // ZIE CONSTRUCTOR
+//	private String generateId(int x) {
+//		StringBuilder s = new StringBuilder();
+//		for (int i = 0; i < x; i++) {
+//			int rand = random.nextInt(36);
+//			s.append(CHARS.charAt(rand));
+//		}
+//		return s.toString();
+//	}
 
 
 }
