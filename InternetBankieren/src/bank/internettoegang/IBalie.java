@@ -11,10 +11,9 @@ public interface IBalie extends Remote {
    * @param plaats de woonplaats van de eigenaar van de nieuwe bankrekening
    * @param wachtwoord van het account waarmee er toegang kan worden verkregen 
    * tot de nieuwe bankrekening
-   * @return null zodra naam of plaats een lege string of wachtwoord minder dan 
+   * @return IllegalArgumentException zodra naam of plaats een lege string of wachtwoord minder dan 
    * vier of meer dan acht karakters lang is en anders de gegenereerde 
-   * accountnaam(8 karakters lang) waarmee er toegang tot de nieuwe bankrekening
-   * kan worden verkregen
+   * accountnaam die de gebruiker heeft ingegeven
    */
   String openRekening(String naam, String plaats, String wachtwoord) throws RemoteException;
 

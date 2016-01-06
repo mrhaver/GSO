@@ -26,7 +26,7 @@ public class Bankiersessie extends UnicastRemoteObject implements
 	}
 
 	public boolean isGeldig() {
-		return System.currentTimeMillis() - laatsteAanroep < GELDIGHEIDSDUUR;
+            return System.currentTimeMillis() - laatsteAanroep < GELDIGHEIDSDUUR;
 	}
 
 	@Override

@@ -17,12 +17,15 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 /**
  * FXML Controller class
@@ -81,6 +84,22 @@ public class BankierSessieController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        tfAmount.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent ke) {
+                if (ke.getCode().equals(KeyCode.ENTER)) {                   
+                    transfer(null);                   
+                }
+            }
+        });
+        tfToAccountNr.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent ke) {
+                if (ke.getCode().equals(KeyCode.ENTER)) {                   
+                    transfer(null);                   
+                }
+            }
+        });
     }
 
     @FXML
@@ -101,7 +120,9 @@ public class BankierSessieController implements Initializable {
             if (from == to) {
                 taMessage.setText("can't transfer money to your own account");
             }
-            long centen = (long) (Double.parseDouble(tfAmount.getText()) * 100);
+            String bedrag = tfAmount.getText();
+            bedrag = bedrag.replace(",", ".");
+            long centen = (long) (Double.parseDouble(bedrag) * 100);
             sessie.maakOver(to, new Money(centen, Money.EURO));
         } catch (RemoteException e1) {
             e1.printStackTrace();

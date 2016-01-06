@@ -23,6 +23,11 @@
                      </font>
                   </Label>
                   <ComboBox fx:id="cbSelectBank1" onAction="#selectBank" prefHeight="26.0" prefWidth="400.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Button fx:id="btTestInform" mnemonicParsing="false" onAction="#testInform" prefHeight="50.0" prefWidth="200.0" text="Test Inform" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                  </Button>
                   <Label prefHeight="25.0" prefWidth="312.0" text="Selecteer bank" GridPane.columnSpan="2147483647">
                      <font>
                         <Font size="20.0" />
@@ -36,6 +41,7 @@
                <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+
                </rowConstraints>
             </GridPane>
          </children>
