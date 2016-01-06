@@ -27,6 +27,17 @@ public interface IBalie extends Remote {
    * account mits accountnaam en wachtwoord matchen, anders null
    */
   IBankiersessie logIn(String accountnaam, String wachtwoord) throws RemoteException;
+  
+  /**
+   * @Author Frank Haver
+   * Deze methode informeert listeners van de balie dus alle listeners krijgen
+   * deze inform. In de inform wordt de rekening gestuurd als dit rekeningnummer
+   * overeenkomt met het rekeningnummer van een bepaalde klant die listening is.
+   * dan krijgt deze klant een melding dat zijn saldo is aangepast.
+   * @param rekeningnummer
+   * @throws RemoteException 
+   */
+  void informRekening(int rekeningnummer) throws RemoteException;
 
 }
 

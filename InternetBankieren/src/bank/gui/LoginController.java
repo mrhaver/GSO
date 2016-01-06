@@ -82,6 +82,7 @@ public class LoginController implements Initializable {
                 taMessages.setText("accountname or password not correct");
             } else {
                 IRekening r = sessie.getRekening();
+                
                 System.out.println("Rekening" + r.getSaldo());
                 application.gotoBankierSessie(balie, sessie);
             }

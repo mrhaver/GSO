@@ -5,14 +5,18 @@
  */
 package bank.gui;
 
+import FontysRMIListener.RemotePropertyListener;
+import FontysRMIListener.RemotePublisher;
 import bank.bankieren.IRekening;
 import bank.bankieren.Money;
 import bank.internettoegang.IBalie;
 import bank.internettoegang.IBankiersessie;
 import fontys.util.InvalidSessionException;
 import fontys.util.NumberDoesntExistException;
+import java.beans.PropertyChangeEvent;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,12 +35,15 @@ import javafx.scene.input.KeyEvent;
  * FXML Controller class
  *
  * @author frankcoenen
+ * 
+ * Frank Haver: Hier moet uiteindelijk het bericht ontvangen 
+ * worden dat de rekening die open staat is veranderd. Op dat
+ * moment moet het bedrag worden aangepast.
  */
-public class BankierSessieController implements Initializable {
+public class BankierSessieController extends UnicastRemoteObject implements Initializable, RemotePropertyListener {
 
     @FXML
     private Hyperlink hlLogout;
-
     @FXML
     private TextField tfNameCity;
     @FXML
@@ -56,9 +63,32 @@ public class BankierSessieController implements Initializable {
     private BankierClient application;
     private IBalie balie;
     private IBankiersessie sessie;
+    RemotePublisher remoteBalie;
+    RemotePublisher remoteSessie;
+    private String sessieGebruiker;
 
-    public void setApp(BankierClient application, IBalie balie, IBankiersessie sessie) {
+    /**
+     * @Author Frank Haver
+     * Er moet nog een listener gezet worden op het juiste remote object
+     * deze komt van de BankierClient klasse af want hier moet een remotepublisher
+     * object opgehaald worden en daar wordt de listener op gezet.
+     * 
+     * elke keer als er dan een inform komt op dat remote object dan komt er
+     * een bericht binnen bij de propertychange methode met een bepaald(e) waarde / object
+     * @throws RemoteException 
+     */
+    public BankierSessieController() throws RemoteException{
+        
+    }
+    
+    public void setApp(BankierClient application, IBalie balie, IBankiersessie sessie) throws RemoteException, InvalidSessionException {
         this.balie = balie;
+        // Frank: hier wordt een listener toegevoegd aan het balie object.
+        remoteBalie = (RemotePublisher) balie;
+        remoteBalie.addListener(this, "balie");
+        remoteSessie = (RemotePublisher) sessie;
+        remoteSessie.addListener(this, "sessie");
+        sessieGebruiker = sessie.getRekening().getEigenaar().getNaam();
         this.sessie = sessie;
         this.application = application;
         IRekening rekening = null;
@@ -103,9 +133,11 @@ public class BankierSessieController implements Initializable {
     }
 
     @FXML
-    private void logout(ActionEvent event) {
+    private void logout(ActionEvent event) throws InvalidSessionException {
         try {
             sessie.logUit();
+            remoteBalie.removeListener(this, "balie");
+            remoteSessie.removeListener(this, "sessie");
             application.gotoLogin(balie, "");
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -124,12 +156,44 @@ public class BankierSessieController implements Initializable {
             bedrag = bedrag.replace(",", ".");
             long centen = (long) (Double.parseDouble(bedrag) * 100);
             sessie.maakOver(to, new Money(centen, Money.EURO));
+            // Frank: Hier worden alle rekeningen geinformeerd.
+            balie.informRekening(to);
         } catch (RemoteException e1) {
             e1.printStackTrace();
             taMessage.setText("verbinding verbroken");
         } catch (NumberDoesntExistException | InvalidSessionException e1) {
             e1.printStackTrace();
             taMessage.setText(e1.getMessage());
+        }
+    }
+    
+    /**
+     * @Author Frank Haver
+     * Hier moet uiteindelijk het bericht ontvangen 
+     * worden dat de rekening die open staat is veranderd. Op dat
+     * moment moet het bedrag worden aangepast.
+     */
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) throws RemoteException {
+        if(evt.getNewValue() instanceof String){
+            String inform = (String)evt.getNewValue();
+            if(inform.equals("OVERGEMAAKT")){
+                try {
+                    tfBalance.setText(sessie.getRekening().getSaldo() + "");
+                } catch (InvalidSessionException ex) {
+                    Logger.getLogger(BankierSessieController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        else{
+            int reknr = (int)evt.getNewValue();
+            try {
+                if(reknr == sessie.getRekening().getNr()){
+                    tfBalance.setText(sessie.getRekening().getSaldo() + "");
+                }
+            } catch (InvalidSessionException ex) {
+                Logger.getLogger(BankierSessieController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }

@@ -1,23 +1,28 @@
 package bank.internettoegang;
 
+import FontysRMIListener.BasicPublisher;
+import FontysRMIListener.RemotePropertyListener;
+import FontysRMIListener.RemotePublisher;
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import bank.bankieren.*;
 
-public class Balie extends UnicastRemoteObject implements IBalie {
+public class Balie extends UnicastRemoteObject implements IBalie, RemotePublisher {
 
 	private static final long serialVersionUID = -4194975069137290780L;
 	private IBank bank;
 	private HashMap<String, ILoginAccount> loginaccounts;
 	//private Collection<IBankiersessie> sessions;
 	private java.util.Random random;
+        private BasicPublisher publisher;
 
 	public Balie(IBank bank) throws RemoteException {
 		this.bank = bank;
 		loginaccounts = new HashMap<String, ILoginAccount>();
 		//sessions = new HashSet<IBankiersessie>();
 		random = new Random();
+                publisher = new BasicPublisher(new String[]{"balie"});
                 
                 // Accounts for Testing reasons
                 openRekening("Frank", "Veghel", "Frank");
@@ -42,7 +47,6 @@ public class Balie extends UnicastRemoteObject implements IBalie {
 //			accountname = generateId(8);
 		loginaccounts.put(accountname, new LoginAccount(accountname,
 				wachtwoord, nr));
-
 		return accountname;
 	}
 
@@ -61,18 +65,20 @@ public class Balie extends UnicastRemoteObject implements IBalie {
 		else return null;
 	}
 
-	private static final String CHARS = "abcdefghijklmnopqrstuvwxyz0123456789";
+    @Override
+    public void addListener(RemotePropertyListener listener, String property) throws RemoteException {
+        publisher.addListener(listener, property);
+    }
 
-        // wordt in de testversie niet gebruikt is onhandig
-        // ZIE CONSTRUCTOR
-//	private String generateId(int x) {
-//		StringBuilder s = new StringBuilder();
-//		for (int i = 0; i < x; i++) {
-//			int rand = random.nextInt(36);
-//			s.append(CHARS.charAt(rand));
-//		}
-//		return s.toString();
-//	}
+    @Override
+    public void removeListener(RemotePropertyListener listener, String property) throws RemoteException {
+        publisher.removeListener(listener, property);
+    }
+
+    @Override
+    public void informRekening(int rekeningnummer) throws RemoteException {
+        publisher.inform(this, "balie", null, rekeningnummer);
+    }
 
 
 }

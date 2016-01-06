@@ -11,6 +11,7 @@
 
 package bank.gui;
 
+import FontysRMIListener.RemotePublisher;
 import bank.gui.BankSelectController;
 import bank.gui.BankierSessieController;
 import bank.gui.LoginController;
@@ -41,7 +42,7 @@ public class BankierClient extends Application {
     private Stage stage;
     private final double MINIMUM_WINDOW_WIDTH = 390.0;
     private final double MINIMUM_WINDOW_HEIGHT = 500.0;
-   // 
+     
 
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -68,9 +69,9 @@ public class BankierClient extends Application {
             String rmiBalie = props.getProperty("balie");
             in.close();
 
-            IBalie balie = (IBalie) Naming.lookup("rmi://" + rmiBalie);
+            IBalie balie = (IBalie) Naming.lookup("rmi://" + rmiBalie);           
                         return balie;
-
+                       
             } catch (Exception exc) {
                 exc.printStackTrace();
                 return null;
