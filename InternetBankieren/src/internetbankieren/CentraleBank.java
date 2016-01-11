@@ -17,27 +17,15 @@ import javafx.stage.Stage;
  *
  * @author Alex Ras
  */
-public class InternetBankieren extends Application {
+public class CentraleBank extends Application {
+    
+    private final double MINIMUM_WINDOW_WIDTH = 600.0;
+    private final double MINIMUM_WINDOW_HEIGHT = 200.0;
     
     @Override
     public void start(Stage primaryStage) {
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
-        
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
-        
-        Scene scene = new Scene(root, 300, 250);
-        
-        primaryStage.setTitle("Hello World!");
-        primaryStage.setScene(scene);
+        primaryStage.setMinWidth(MINIMUM_WINDOW_WIDTH);
+        primaryStage.setMinHeight(MINIMUM_WINDOW_HEIGHT);
         primaryStage.show();
     }
 
