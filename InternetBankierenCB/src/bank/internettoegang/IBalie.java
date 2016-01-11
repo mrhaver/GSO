@@ -37,7 +37,9 @@ public interface IBalie extends Remote {
    * @param rekeningnummer
    * @throws RemoteException 
    */
-  void informRekening(int rekeningnummer) throws RemoteException;
+  void informRekeningen(int rekeningnummer) throws RemoteException;
+  
+  //void zoekRekening(int rekeningnummer) throws RemoteException;
 
 }
 

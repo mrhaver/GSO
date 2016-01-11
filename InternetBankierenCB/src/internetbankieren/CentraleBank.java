@@ -5,35 +5,21 @@
  */
 package internetbankieren;
 
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
+import java.rmi.RemoteException;
 
 /**
  *
- * @author Alex Ras
+ * @author Frank Haver
  */
-public class CentraleBank extends Application {
-    
-    private final double MINIMUM_WINDOW_WIDTH = 600.0;
-    private final double MINIMUM_WINDOW_HEIGHT = 200.0;
+public class CentraleBank implements ICentraleBank{
+
+    public CentraleBank(){
+        
+    }
     
     @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setMinWidth(MINIMUM_WINDOW_WIDTH);
-        primaryStage.setMinHeight(MINIMUM_WINDOW_HEIGHT);
-        primaryStage.show();
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        launch(args);
+    public boolean maakOverRekening() throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

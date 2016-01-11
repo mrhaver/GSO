@@ -13,14 +13,14 @@ public class Balie extends UnicastRemoteObject implements IBalie, RemotePublishe
 	private static final long serialVersionUID = -4194975069137290780L;
 	private IBank bank;
 	private HashMap<String, ILoginAccount> loginaccounts;
-	//private Collection<IBankiersessie> sessions;
+	private Collection<IBankiersessie> sessions;
 	private java.util.Random random;
         private BasicPublisher publisher;
 
 	public Balie(IBank bank) throws RemoteException {
 		this.bank = bank;
 		loginaccounts = new HashMap<String, ILoginAccount>();
-		//sessions = new HashSet<IBankiersessie>();
+		sessions = new HashSet<IBankiersessie>();
 		random = new Random();
                 publisher = new BasicPublisher(new String[]{"balie"});
                 
@@ -59,7 +59,7 @@ public class Balie extends UnicastRemoteObject implements IBalie, RemotePublishe
 		if (loginaccount.checkWachtwoord(wachtwoord)) {
 			IBankiersessie sessie = new Bankiersessie(loginaccount
 					.getReknr(), bank);
-			
+			sessions.add(sessie);
 		 	return sessie;
 		}
 		else return null;
@@ -74,11 +74,9 @@ public class Balie extends UnicastRemoteObject implements IBalie, RemotePublishe
     public void removeListener(RemotePropertyListener listener, String property) throws RemoteException {
         publisher.removeListener(listener, property);
     }
-
+    
     @Override
-    public void informRekening(int rekeningnummer) throws RemoteException {
+    public void informRekeningen(int rekeningnummer) throws RemoteException {
         publisher.inform(this, "balie", null, rekeningnummer);
     }
-
-
 }

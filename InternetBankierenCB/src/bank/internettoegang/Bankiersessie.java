@@ -44,9 +44,8 @@ public class Bankiersessie extends UnicastRemoteObject implements IBankiersessie
 					"source and destination must be different");
 		if (!bedrag.isPositive())
 			throw new RuntimeException("amount must be positive");
-		boolean gelukt = bank.maakOver(reknr, bestemming, bedrag);
-                publisher.inform(this, "sessie", null, "OVERGEMAAKT");
-		return gelukt;
+                
+		return bank.maakOver(reknr, bestemming, bedrag);
 	}
 
 	private void updateLaatsteAanroep() throws InvalidSessionException {

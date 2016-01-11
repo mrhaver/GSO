@@ -22,6 +22,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +45,7 @@ public class BankierClient extends Application {
     private Stage stage;
     private final double MINIMUM_WINDOW_WIDTH = 390.0;
     private final double MINIMUM_WINDOW_HEIGHT = 500.0;
+    private Registry registry;
      
 
     @Override
@@ -62,14 +66,25 @@ public class BankierClient extends Application {
     
     
      protected IBalie connectToBalie(String bankName) {
-        try {
+        int port;
+         try {
             FileInputStream in = new FileInputStream(bankName+".props");
             Properties props = new Properties();
             props.load(in);
             String rmiBalie = props.getProperty("balie");
+            String sPort = props.getProperty("port");
+            port = Integer.parseInt(sPort);
             in.close();
 
-            IBalie balie = (IBalie) Naming.lookup("rmi://" + rmiBalie);           
+            try {
+                registry = LocateRegistry.getRegistry(java.net.InetAddress.getLocalHost().getHostAddress(), port);
+            } catch (RemoteException ex) {
+                System.out.println("Client: Cannot locate registry");
+                System.out.println("Client: RemoteException: " + ex.getMessage());
+                registry = null;
+            }
+            
+            IBalie balie = (IBalie) registry.lookup(rmiBalie);           
                         return balie;
                        
             } catch (Exception exc) {

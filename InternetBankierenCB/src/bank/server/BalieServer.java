@@ -9,10 +9,14 @@ import bank.bankieren.Bank;
 import bank.gui.BankierClient;
 import bank.internettoegang.Balie;
 import bank.internettoegang.IBalie;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +39,7 @@ public class BalieServer extends Application {
     private final double MINIMUM_WINDOW_WIDTH = 600.0;
     private final double MINIMUM_WINDOW_HEIGHT = 200.0;
     private String nameBank;
+    private Registry registry;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -53,21 +58,36 @@ public class BalieServer extends Application {
     }
 
     public boolean startBalie(String nameBank) {
-            
             FileOutputStream out = null;
+            String sPort;      
             try {
+                // pak de nieuwe vrije poort
+                FileInputStream in = new FileInputStream("Port.props");
+                Properties props = new Properties();
+                props.load(in);
+                sPort = props.getProperty("port");
+                in.close();
+                
                 this.nameBank = nameBank;
                 String address = java.net.InetAddress.getLocalHost().getHostAddress();
-                int port = 1099;
-                Properties props = new Properties();
+                int port = Integer.parseInt(sPort);
+                props = new Properties();
                 String rmiBalie = address + ":" + port + "/" + nameBank;
+                props.setProperty("port", String.valueOf(port));
                 props.setProperty("balie", rmiBalie);
                 out = new FileOutputStream(nameBank + ".props");
                 props.store(out, null);
                 out.close();
-                java.rmi.registry.LocateRegistry.createRegistry(port);
+                
+                props = new Properties();
+                props.setProperty("port", String.valueOf(port + 1));
+                out = new FileOutputStream("Port.props");
+                props.store(out, null);
+                out.close();
+                
+                registry = LocateRegistry.createRegistry(port);
                 IBalie balie = new Balie(new Bank(nameBank));
-                Naming.rebind(nameBank, balie);               
+                registry.rebind(rmiBalie, balie);  
                 return true;
 
             } catch (IOException ex) {

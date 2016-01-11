@@ -155,9 +155,18 @@ public class BankierSessieController extends UnicastRemoteObject implements Init
             String bedrag = tfAmount.getText();
             bedrag = bedrag.replace(",", ".");
             long centen = (long) (Double.parseDouble(bedrag) * 100);
-            sessie.maakOver(to, new Money(centen, Money.EURO));
-            // Frank: Hier worden alle rekeningen geinformeerd.
-            balie.informRekening(to);
+            boolean overgemaakt = sessie.maakOver(to, new Money(centen, Money.EURO));
+            // Frank: Als er overgemaakt is dan was het een rekening van dezelfde balie
+            // anders dan zou het nog mogelijk zijn dat de rekening zich op een van 
+            // de andere balies bevind.
+            if(overgemaakt){
+                tfBalance.setText(sessie.getRekening().getSaldo() + "");
+                balie.informRekeningen(to);
+            } else{
+                
+            }
+
+            
         } catch (RemoteException e1) {
             e1.printStackTrace();
             taMessage.setText("verbinding verbroken");
@@ -175,17 +184,17 @@ public class BankierSessieController extends UnicastRemoteObject implements Init
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) throws RemoteException {
-        if(evt.getNewValue() instanceof String){
-            String inform = (String)evt.getNewValue();
-            if(inform.equals("OVERGEMAAKT")){
-                try {
-                    tfBalance.setText(sessie.getRekening().getSaldo() + "");
-                } catch (InvalidSessionException ex) {
-                    Logger.getLogger(BankierSessieController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        else{
+//        if(evt.getNewValue() instanceof String){
+//            String inform = (String)evt.getNewValue();
+//            if(inform.equals("OVERGEMAAKT")){
+//                try {
+//                    tfBalance.setText(sessie.getRekening().getSaldo() + "");
+//                } catch (InvalidSessionException ex) {
+//                    Logger.getLogger(BankierSessieController.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        }
+
             int reknr = (int)evt.getNewValue();
             try {
                 if(reknr == sessie.getRekening().getNr()){
@@ -194,6 +203,6 @@ public class BankierSessieController extends UnicastRemoteObject implements Init
             } catch (InvalidSessionException ex) {
                 Logger.getLogger(BankierSessieController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
+        
     }
 }
