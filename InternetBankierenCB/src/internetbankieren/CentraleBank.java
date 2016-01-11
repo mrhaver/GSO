@@ -5,21 +5,38 @@
  */
 package internetbankieren;
 
+import FontysRMIListener.BasicPublisher;
+import FontysRMIListener.RemotePropertyListener;
+import FontysRMIListener.RemotePublisher;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 /**
  *
  * @author Frank Haver
  */
-public class CentraleBank implements ICentraleBank{
+public class CentraleBank extends UnicastRemoteObject implements ICentraleBank, RemotePublisher{
 
-    public CentraleBank(){
-        
+    private BasicPublisher publisher;
+    
+    public CentraleBank() throws RemoteException{
+        publisher = new BasicPublisher(new String[]{"Centrale"});
     }
     
     @Override
     public boolean maakOverRekening() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("gelukt!");
+        return true;
+    }
+
+    @Override
+    public void addListener(RemotePropertyListener listener, String property) throws RemoteException {
+        publisher.addListener(listener, property);
+    }
+
+    @Override
+    public void removeListener(RemotePropertyListener listener, String property) throws RemoteException {
+        publisher.removeListener(listener, property);
     }
     
 }

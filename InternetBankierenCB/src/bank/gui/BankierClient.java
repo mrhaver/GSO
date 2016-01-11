@@ -76,14 +76,7 @@ public class BankierClient extends Application {
             port = Integer.parseInt(sPort);
             in.close();
 
-            try {
-                registry = LocateRegistry.getRegistry(java.net.InetAddress.getLocalHost().getHostAddress(), port);
-            } catch (RemoteException ex) {
-                System.out.println("Client: Cannot locate registry");
-                System.out.println("Client: RemoteException: " + ex.getMessage());
-                registry = null;
-            }
-            
+            registry = LocateRegistry.getRegistry(java.net.InetAddress.getLocalHost().getHostAddress(), port);
             IBalie balie = (IBalie) registry.lookup(rmiBalie);           
                         return balie;
                        

@@ -9,6 +9,7 @@ import bank.bankieren.Bank;
 import bank.gui.BankierClient;
 import bank.internettoegang.Balie;
 import bank.internettoegang.IBalie;
+import internetbankieren.ICentraleBank;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -39,7 +40,8 @@ public class BalieServer extends Application {
     private final double MINIMUM_WINDOW_WIDTH = 600.0;
     private final double MINIMUM_WINDOW_HEIGHT = 200.0;
     private String nameBank;
-    private Registry registry;
+    private Registry serverRegistry;
+    private Registry clientRegistry;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -50,8 +52,14 @@ public class BalieServer extends Application {
             stage.setMinWidth(MINIMUM_WINDOW_WIDTH);
             stage.setMinHeight(MINIMUM_WINDOW_HEIGHT);
             gotoBankSelect();
-
             primaryStage.show();
+
+            if(connectToCentrale() != null){
+                System.out.println("centrale gelukt");
+            }
+            else{
+                System.out.println("centrale mislukt");
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -85,9 +93,9 @@ public class BalieServer extends Application {
                 props.store(out, null);
                 out.close();
                 
-                registry = LocateRegistry.createRegistry(port);
+                serverRegistry = LocateRegistry.createRegistry(port);
                 IBalie balie = new Balie(new Bank(nameBank));
-                registry.rebind(rmiBalie, balie);  
+                serverRegistry.rebind(rmiBalie, balie);  
                 return true;
 
             } catch (IOException ex) {
@@ -100,6 +108,28 @@ public class BalieServer extends Application {
                 }
             }
             return false;
+    }
+    
+    public ICentraleBank connectToCentrale(){
+        int port;
+         try {
+            FileInputStream in = new FileInputStream("centraleBank.props");
+            Properties props = new Properties();
+            props.load(in);
+            String sPort = props.getProperty("port");
+            String rmiBalie = props.getProperty("centrale");
+            port = Integer.parseInt(sPort);
+            in.close();
+
+            clientRegistry = LocateRegistry.getRegistry(java.net.InetAddress.getLocalHost().getHostAddress(), port);
+            ICentraleBank centrale = (ICentraleBank) clientRegistry.lookup(rmiBalie);  
+            centrale.maakOverRekening();
+                        return centrale;
+                       
+            } catch (Exception exc) {
+                exc.printStackTrace();
+                return null;
+            }
     }
 
     public void gotoBankSelect() {

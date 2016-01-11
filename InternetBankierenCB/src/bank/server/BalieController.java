@@ -40,8 +40,8 @@ public class BalieController implements Initializable {
     @FXML
     private TextArea taMessage;
     
-     private BalieServer application;
-     private String bankNaam;
+    private BalieServer application;
+    private String bankNaam;
      
     public void setApp(BalieServer application){
         this.application = application;

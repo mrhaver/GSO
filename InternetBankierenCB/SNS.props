@@ -1,2 +1,3 @@
-#Tue May 27 01:12:14 CEST 2014
-balie=192.168.2.2\:1099/SNS
+#Mon Jan 11 22:46:18 CET 2016
+port=1102
+balie=10.0.1.128\:1102/SNS
