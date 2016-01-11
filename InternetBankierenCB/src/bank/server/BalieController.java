@@ -6,14 +6,20 @@
 
 package bank.server;
 
+import FontysRMIListener.RemotePropertyListener;
+import FontysRMIListener.RemotePublisher;
 import bank.bankieren.Bank;
 import bank.gui.BankierClient;
 import bank.internettoegang.Balie;
 import bank.internettoegang.IBalie;
+import internetbankieren.ICentraleBank;
+import java.beans.PropertyChangeEvent;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -32,7 +38,7 @@ import javafx.scene.control.TextArea;
  *
  * @author frankcoenen
  */
-public class BalieController implements Initializable {
+public class BalieController extends UnicastRemoteObject implements Initializable, RemotePropertyListener {
     
     @FXML
     private ComboBox<String> cbSelectBank1;
@@ -42,9 +48,19 @@ public class BalieController implements Initializable {
     
     private BalieServer application;
     private String bankNaam;
+    private ICentraleBank centrale;
+    private RemotePublisher remoteCentrale;
      
-    public void setApp(BalieServer application){
+    public void setApp(BalieServer application, ICentraleBank centrale) throws RemoteException{
         this.application = application;
+        this.centrale = centrale;
+        remoteCentrale = (RemotePublisher) centrale;
+        remoteCentrale.addListener(this, "centrale");
+        centrale.informBalies();
+    }
+    
+    public BalieController() throws RemoteException{
+        
     }
 
     /**
@@ -71,6 +87,11 @@ public class BalieController implements Initializable {
    
     @FXML
     private void selectBank(ActionEvent event) {
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) throws RemoteException {
+        System.out.println(evt.getNewValue().toString());
     }
 }
    

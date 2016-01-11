@@ -20,13 +20,17 @@ public class CentraleBank extends UnicastRemoteObject implements ICentraleBank, 
     private BasicPublisher publisher;
     
     public CentraleBank() throws RemoteException{
-        publisher = new BasicPublisher(new String[]{"Centrale"});
+        publisher = new BasicPublisher(new String[]{"centrale"});
     }
     
     @Override
     public boolean maakOverRekening() throws RemoteException {
-        System.out.println("gelukt!");
         return true;
+    }
+    
+    @Override
+    public void informBalies() throws RemoteException{
+        publisher.inform(this, "centrale", this, "TEST");
     }
 
     @Override

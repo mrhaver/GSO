@@ -90,7 +90,6 @@ public class CentraleBankServer extends Application {
             registry = LocateRegistry.createRegistry(port);
             ICentraleBank bank = new CentraleBank();
             registry.rebind(rmiCentraleBank, bank);
-            System.out.println("centraleBank rebinded");
         } 
         catch(Exception ex)
         {

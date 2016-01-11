@@ -53,13 +53,6 @@ public class BalieServer extends Application {
             stage.setMinHeight(MINIMUM_WINDOW_HEIGHT);
             gotoBankSelect();
             primaryStage.show();
-
-            if(connectToCentrale() != null){
-                System.out.println("centrale gelukt");
-            }
-            else{
-                System.out.println("centrale mislukt");
-            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -135,7 +128,7 @@ public class BalieServer extends Application {
     public void gotoBankSelect() {
         try {
             BalieController bankSelect = (BalieController) replaceSceneContent("Balie.fxml");
-            bankSelect.setApp(this);
+            bankSelect.setApp(this, connectToCentrale());
         } catch (Exception ex) {
             Logger.getLogger(BankierClient.class.getName()).log(Level.SEVERE, null, ex);
         }

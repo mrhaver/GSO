@@ -24,4 +24,11 @@ public interface ICentraleBank extends Remote{
      * @throws RemoteException 
      */
     boolean maakOverRekening() throws RemoteException;
+    
+    /**
+     * @Author Frank Haver
+     * Deze methode stuurt naar alle luisterende balies een bericht
+     * @throws RemoteException 
+     */
+    void informBalies() throws RemoteException;
 }
