@@ -30,7 +30,7 @@ public interface ICentraleBank extends Remote{
      * @Author Frank Haver
      * @throws RemoteException 
      */
-    void informBalies(String bericht) throws RemoteException;
+    //void informBalies(String bericht) throws RemoteException;
     
     /**
      * @param overmaak

@@ -82,6 +82,7 @@ public class Bank implements IBank {
 		if (dest_account == null) {
                      return false;
                 }
+                System.out.println(this.name + " Bank:\t " + " rekening gewijzigd met €" + money.getValue());
                 return dest_account.muteer(money);
                    
         }

@@ -84,11 +84,13 @@ public class Balie extends UnicastRemoteObject implements IBalie, RemotePublishe
     @Override
     public void informEigenRekeningen(int rekeningnummer) throws RemoteException {
         publisher.inform(this, "balie", null, rekeningnummer);
+        System.out.println(this.bank.getName() + " Balie:\t rekeningnummer " + rekeningnummer + " op de hoogte stellen van verandering");
     }
 
     @Override
     public void informAndereRekeningen(String[] overmaak) throws RemoteException {
         centrale.maakOverRekening(overmaak);
+        System.out.println(this.bank.getName() + " Balie:\t rekeningnummer zoeken via Centrale Bank");
     }
     
     @Override
@@ -101,6 +103,7 @@ public class Balie extends UnicastRemoteObject implements IBalie, RemotePublishe
         for(IBankiersessie s : sessions){
             try {
                 if(s.getRekening().getNr() == rekeningnummer){
+                    System.out.println(this.bank.getName() + " Balie:\t rekeningnummer gevonden overmaken via rekeningnummer");
                     return s.maakOverRekening(rekeningnummer, money);
                 }
             } catch (InvalidSessionException ex) {

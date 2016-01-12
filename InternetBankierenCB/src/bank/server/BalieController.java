@@ -105,6 +105,7 @@ public class BalieController extends UnicastRemoteObject implements Initializabl
                 long cents = Long.parseLong(overmaak[1]);
                 Money money = new Money(cents, Money.EURO);
                 if(balie.maakOver(rekeningnummer, money)){
+                    System.out.println(this.bankNaam + " Baliectrl:\t €" + money.getValue() + " overgemaakt naar " + rekeningnummer);
                     balie.informEigenRekeningen(rekeningnummer);
                 }
             }

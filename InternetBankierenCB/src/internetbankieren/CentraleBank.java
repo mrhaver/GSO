@@ -8,6 +8,7 @@ package internetbankieren;
 import FontysRMIListener.BasicPublisher;
 import FontysRMIListener.RemotePropertyListener;
 import FontysRMIListener.RemotePublisher;
+import bank.bankieren.Money;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -23,14 +24,15 @@ public class CentraleBank extends UnicastRemoteObject implements ICentraleBank, 
         publisher = new BasicPublisher(new String[]{"centrale"});
     }
     
-    @Override
-    public void informBalies(String bericht) throws RemoteException{
-        publisher.inform(this, "centrale", this, bericht);
-    }
+//    @Override
+//    public void informBalies(String bericht) throws RemoteException{
+//        publisher.inform(this, "centrale", this, bericht);
+//    }
     
     @Override
     public void maakOverRekening(String[] overmaak) throws RemoteException {
         publisher.inform(this, "centrale", this, overmaak);
+        System.out.println("Centrale:\t balies informen over " + overmaak[0] + " met €" + new Money(Long.parseLong(overmaak[1]), Money.EURO).getValue());
     }
 
     @Override

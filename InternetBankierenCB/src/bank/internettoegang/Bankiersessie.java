@@ -50,6 +50,7 @@ public class Bankiersessie extends UnicastRemoteObject implements IBankiersessie
         
         @Override
         public boolean maakOverRekening(int bestemming, Money bedrag){
+            System.out.println(this.bank.getName() + " Sessie:\t €" + bedrag.getValue() + " overmaken naar " + bestemming);
             return bank.maakOverRekening(bestemming, bedrag);
         }
 

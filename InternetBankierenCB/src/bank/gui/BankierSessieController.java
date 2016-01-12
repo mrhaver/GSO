@@ -160,10 +160,12 @@ public class BankierSessieController extends UnicastRemoteObject implements Init
             // anders dan zou het nog mogelijk zijn dat de rekening zich op een van 
             // de andere balies bevind.
             if(overgemaakt){
-                tfBalance.setText(sessie.getRekening().getSaldo() + "");
+                tfBalance.setText(sessie.getRekening().getSaldo() + "");               
                 balie.informEigenRekeningen(to);
+                System.out.println("Sessiectrl:\t overmaken gelukt binnen bank");
             } else{
                 balie.informAndereRekeningen(new String[]{String.valueOf(to), String.valueOf(centen)});
+                System.out.println("Sessiectrl:\t rekeningnummer zoeken via balie");
                 sessie.maakOverRekening(from, new Money(-centen, Money.EURO));
                 tfBalance.setText(sessie.getRekening().getSaldo() + "");
             }
@@ -189,6 +191,7 @@ public class BankierSessieController extends UnicastRemoteObject implements Init
         int reknr = (int)evt.getNewValue();
         try {
             if(reknr == sessie.getRekening().getNr()){
+                System.out.println("Sessiectrl:\t Rekeningnummer " + reknr + " heeft wijziging binnen gekregen");
                 tfBalance.setText(sessie.getRekening().getSaldo() + "");
             }
         } catch (InvalidSessionException ex) {
