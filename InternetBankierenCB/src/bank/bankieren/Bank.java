@@ -22,6 +22,7 @@ public class Bank implements IBank {
 		this.name = name;	
 	}
 
+        @Override
 	public int openRekening(String name, String city) {
 		if (name.equals("") || city.equals(""))
 			return -1;
@@ -43,10 +44,12 @@ public class Bank implements IBank {
 		return klant;
 	}
 
+        @Override
 	public IRekening getRekening(int nr) {
 		return accounts.get(nr);
 	}
 
+        @Override
 	public boolean maakOver(int source, int destination, Money money)
 			throws NumberDoesntExistException {
 		if (source == destination)
@@ -77,10 +80,14 @@ public class Bank implements IBank {
 		return success;
 	}
         
+        @Override
         public boolean maakOverRekening(int destination, Money money){
             IRekeningTbvBank dest_account = (IRekeningTbvBank) getRekening(destination);
 		if (dest_account == null) {
                      return false;
+                }
+                if (money == null){
+                    return false;
                 }
                 System.out.println(this.name + " Bank:\t " + " rekening gewijzigd met €" + money.getValue());
                 return dest_account.muteer(money);

@@ -94,11 +94,6 @@ public class Balie extends UnicastRemoteObject implements IBalie, RemotePublishe
     }
     
     @Override
-    public void bevestigTransactie(String gelukt){
-        publisher.inform(this, "balie", null, gelukt);
-    }
-    
-    @Override
     public boolean maakOver(int rekeningnummer, Money money) {
         for(IBankiersessie s : sessions){
             try {
@@ -106,9 +101,7 @@ public class Balie extends UnicastRemoteObject implements IBalie, RemotePublishe
                     System.out.println(this.bank.getName() + " Balie:\t rekeningnummer gevonden overmaken via rekeningnummer");
                     return s.maakOverRekening(rekeningnummer, money);
                 }
-            } catch (InvalidSessionException ex) {
-                Logger.getLogger(Balie.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (RemoteException ex) {
+            } catch (InvalidSessionException | RemoteException ex) {
                 Logger.getLogger(Balie.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

@@ -40,9 +40,10 @@ public interface IBankiersessie extends Remote {
         /**
          * @Author Frank Haver
          * maakt geld over naar een bepaalde rekening met een bepaald bedrag
-         * @param bestemming
-         * @param bedrag
-         * @return 
+         * @param bestemming is een rekeningnummer van 9 cijfers
+         * @param bedrag money bedrag kan min en plus getal zijn ook 0 maar geen null
+         * @return  true als het is gelukt 
+         *          false als het is mislukt
          */
         boolean maakOverRekening(int bestemming, Money bedrag) throws RemoteException;
         

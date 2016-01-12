@@ -17,26 +17,11 @@ public interface ICentraleBank extends Remote{
     
     /**
      * @Author Frank Haver
-     * Deze methode zoekt in alle bestaande balies naar de juiste 'sessie'
-     * Waar het geld naar toe moet en maakt het geld naar deze sessie over
-     * @return  true als het gelukt is
-     *          false als het niet gelukt is
-     * @throws RemoteException 
-     */
-    //boolean maakOverRekening() throws RemoteException;
-    
-    /**
-     * @param bericht
-     * @Author Frank Haver
-     * @throws RemoteException 
-     */
-    //void informBalies(String bericht) throws RemoteException;
-    
-    /**
-     * @param overmaak
-     * @Author Frank Haver
      * methode stuurt een string array naar alle luisterende balies met de 
      * waarde van het rekening nummer en de hoeveelheid centen
+     * @param overmaak bevat 2 string objecten
+     *      eerste string object kan omgezet worden naar een integer en heeft een lengte van 9
+     *      tweede string object kan omgezet worden naar een integer
      */
     void maakOverRekening(String[] overmaak) throws RemoteException;
 }

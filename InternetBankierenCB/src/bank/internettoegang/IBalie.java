@@ -41,32 +41,30 @@ public interface IBalie extends Remote {
   void informEigenRekeningen(int rekeningnummer) throws RemoteException;
   
   /**
-     * @param overmaak
+
    * @Author Frank Haver
    * Deze methode moet 'tegen de centrale zeggen' dat er naar een bepaald 
-   * rekeningnummer overgemaakt moet worden.
+   * rekeningnummer overgemaakt moet worden met een bepaald bedrag
+   * @param overmaak 
+   *    bestaat uit 2 strings
+   *    eerste string is een rekeningnummer van 9 cijfers
+   *    tweede string moet om kunnen worden gezet naar een integer
    * @throws RemoteException 
    */
   void informAndereRekeningen(String[] overmaak) throws RemoteException;
   
   /**
-     * @return 
-     * @throws java.rmi.RemoteException
    * @Author Frank Haver
    * Als het binnenkomende rekeningnummer overeenkomt met een rekeningnummer 
    * van de balie dan moet het geld naar dit rekeningnummer worden overgemaakt
-   * @param rekeningnummer
-   * @param money
-   * 
+   * @param rekeningnummer rekeningnummer van 9 cijfers
+   * @param money money object, kan vanalles zijn
+   * @return true als het overmaken is gelukt fout als het overmaken is mislukt
+   * @throws RemoteException
    */
   boolean maakOver(int rekeningnummer, Money money) throws RemoteException;
   
-  /**
-   * @Author Frank Haver
-   * @param gelukt
-   * @throws RemoteException 
-   */
-  void bevestigTransactie(String gelukt) throws RemoteException;
+
 
 }
 

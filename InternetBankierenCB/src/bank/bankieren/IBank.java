@@ -43,9 +43,10 @@ public interface IBank {
     /**
      * @Author Frank Haver
      * maakt een bepaald bedrag over naar een bepaalde rekening
-     * @param bestemming
-     * @param bedrag
-     * @return 
+     * @param bestemming is een rekeningnummer van deze bank, dit is al gecontroleerd
+     * @param bedrag het bedrag dat overgemaakt moet worden dit mag niet null zijn
+     * @return  true als het is gelukt
+     *          false als het is mislukt
      */
     boolean maakOverRekening(int bestemming, Money bedrag);
     
