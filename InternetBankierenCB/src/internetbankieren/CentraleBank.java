@@ -24,13 +24,13 @@ public class CentraleBank extends UnicastRemoteObject implements ICentraleBank, 
     }
     
     @Override
-    public boolean maakOverRekening() throws RemoteException {
-        return true;
+    public void informBalies(String bericht) throws RemoteException{
+        publisher.inform(this, "centrale", this, bericht);
     }
     
     @Override
-    public void informBalies() throws RemoteException{
-        publisher.inform(this, "centrale", this, "TEST");
+    public void maakOverRekening(String[] overmaak) throws RemoteException {
+        publisher.inform(this, "centrale", this, overmaak);
     }
 
     @Override
@@ -42,5 +42,7 @@ public class CentraleBank extends UnicastRemoteObject implements ICentraleBank, 
     public void removeListener(RemotePropertyListener listener, String property) throws RemoteException {
         publisher.removeListener(listener, property);
     }
+
+
     
 }

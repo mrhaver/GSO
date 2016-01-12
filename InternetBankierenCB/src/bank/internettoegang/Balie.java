@@ -7,6 +7,11 @@ import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import bank.bankieren.*;
+import fontys.util.InvalidSessionException;
+import fontys.util.NumberDoesntExistException;
+import internetbankieren.ICentraleBank;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Balie extends UnicastRemoteObject implements IBalie, RemotePublisher {
 
@@ -16,14 +21,15 @@ public class Balie extends UnicastRemoteObject implements IBalie, RemotePublishe
 	private Collection<IBankiersessie> sessions;
 	private java.util.Random random;
         private BasicPublisher publisher;
+        private ICentraleBank centrale;
 
-	public Balie(IBank bank) throws RemoteException {
+	public Balie(IBank bank, ICentraleBank centrale) throws RemoteException {
 		this.bank = bank;
+                this.centrale = centrale;
 		loginaccounts = new HashMap<String, ILoginAccount>();
 		sessions = new HashSet<IBankiersessie>();
 		random = new Random();
                 publisher = new BasicPublisher(new String[]{"balie"});
-                
                 // Accounts for Testing reasons
                 openRekening("Frank", "Veghel", "Frank");
                 openRekening("Haver", "Veghel", "Haver");               
@@ -76,7 +82,33 @@ public class Balie extends UnicastRemoteObject implements IBalie, RemotePublishe
     }
     
     @Override
-    public void informRekeningen(int rekeningnummer) throws RemoteException {
+    public void informEigenRekeningen(int rekeningnummer) throws RemoteException {
         publisher.inform(this, "balie", null, rekeningnummer);
+    }
+
+    @Override
+    public void informAndereRekeningen(String[] overmaak) throws RemoteException {
+        centrale.maakOverRekening(overmaak);
+    }
+    
+    @Override
+    public void bevestigTransactie(String gelukt){
+        publisher.inform(this, "balie", null, gelukt);
+    }
+    
+    @Override
+    public boolean maakOver(int rekeningnummer, Money money) {
+        for(IBankiersessie s : sessions){
+            try {
+                if(s.getRekening().getNr() == rekeningnummer){
+                    return s.maakOverRekening(rekeningnummer, money);
+                }
+            } catch (InvalidSessionException ex) {
+                Logger.getLogger(Balie.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (RemoteException ex) {
+                Logger.getLogger(Balie.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return false;
     }
 }

@@ -41,6 +41,15 @@ public interface IBank {
             throws NumberDoesntExistException;
 
     /**
+     * @Author Frank Haver
+     * maakt een bepaald bedrag over naar een bepaalde rekening
+     * @param bestemming
+     * @param bedrag
+     * @return 
+     */
+    boolean maakOverRekening(int bestemming, Money bedrag);
+    
+    /**
      * @param nr
      * @return de bankrekening met nummer nr mits bij deze bank bekend, anders null
      */

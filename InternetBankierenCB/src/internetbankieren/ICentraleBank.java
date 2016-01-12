@@ -23,12 +23,20 @@ public interface ICentraleBank extends Remote{
      *          false als het niet gelukt is
      * @throws RemoteException 
      */
-    boolean maakOverRekening() throws RemoteException;
+    //boolean maakOverRekening() throws RemoteException;
     
     /**
+     * @param bericht
      * @Author Frank Haver
-     * Deze methode stuurt naar alle luisterende balies een bericht
      * @throws RemoteException 
      */
-    void informBalies() throws RemoteException;
+    void informBalies(String bericht) throws RemoteException;
+    
+    /**
+     * @param overmaak
+     * @Author Frank Haver
+     * methode stuurt een string array naar alle luisterende balies met de 
+     * waarde van het rekening nummer en de hoeveelheid centen
+     */
+    void maakOverRekening(String[] overmaak) throws RemoteException;
 }

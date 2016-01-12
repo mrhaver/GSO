@@ -1,5 +1,6 @@
 package bank.internettoegang;
 
+import bank.bankieren.Money;
 import java.rmi.*;
 
 
@@ -37,9 +38,35 @@ public interface IBalie extends Remote {
    * @param rekeningnummer
    * @throws RemoteException 
    */
-  void informRekeningen(int rekeningnummer) throws RemoteException;
+  void informEigenRekeningen(int rekeningnummer) throws RemoteException;
   
-  //void zoekRekening(int rekeningnummer) throws RemoteException;
+  /**
+     * @param overmaak
+   * @Author Frank Haver
+   * Deze methode moet 'tegen de centrale zeggen' dat er naar een bepaald 
+   * rekeningnummer overgemaakt moet worden.
+   * @throws RemoteException 
+   */
+  void informAndereRekeningen(String[] overmaak) throws RemoteException;
+  
+  /**
+     * @return 
+     * @throws java.rmi.RemoteException
+   * @Author Frank Haver
+   * Als het binnenkomende rekeningnummer overeenkomt met een rekeningnummer 
+   * van de balie dan moet het geld naar dit rekeningnummer worden overgemaakt
+   * @param rekeningnummer
+   * @param money
+   * 
+   */
+  boolean maakOver(int rekeningnummer, Money money) throws RemoteException;
+  
+  /**
+   * @Author Frank Haver
+   * @param gelukt
+   * @throws RemoteException 
+   */
+  void bevestigTransactie(String gelukt) throws RemoteException;
 
 }
 

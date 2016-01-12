@@ -47,6 +47,11 @@ public class Bankiersessie extends UnicastRemoteObject implements IBankiersessie
                 
 		return bank.maakOver(reknr, bestemming, bedrag);
 	}
+        
+        @Override
+        public boolean maakOverRekening(int bestemming, Money bedrag){
+            return bank.maakOverRekening(bestemming, bedrag);
+        }
 
 	private void updateLaatsteAanroep() throws InvalidSessionException {
 		if (!isGeldig()) {

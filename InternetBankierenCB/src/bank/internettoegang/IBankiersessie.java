@@ -37,6 +37,15 @@ public interface IBankiersessie extends Remote {
 			throws NumberDoesntExistException, InvalidSessionException,
 			RemoteException;
 
+        /**
+         * @Author Frank Haver
+         * maakt geld over naar een bepaalde rekening met een bepaald bedrag
+         * @param bestemming
+         * @param bedrag
+         * @return 
+         */
+        boolean maakOverRekening(int bestemming, Money bedrag) throws RemoteException;
+        
 	/**
 	 * sessie wordt beeindigd
 	 */

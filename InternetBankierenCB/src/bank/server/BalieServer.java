@@ -42,6 +42,9 @@ public class BalieServer extends Application {
     private String nameBank;
     private Registry serverRegistry;
     private Registry clientRegistry;
+    private IBalie balie;
+    private ICentraleBank centrale;
+    private BalieController bankSelect;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -87,7 +90,8 @@ public class BalieServer extends Application {
                 out.close();
                 
                 serverRegistry = LocateRegistry.createRegistry(port);
-                IBalie balie = new Balie(new Bank(nameBank));
+                balie = new Balie(new Bank(nameBank), centrale);
+                bankSelect.setBalie(balie);
                 serverRegistry.rebind(rmiBalie, balie);  
                 return true;
 
@@ -115,8 +119,7 @@ public class BalieServer extends Application {
             in.close();
 
             clientRegistry = LocateRegistry.getRegistry(java.net.InetAddress.getLocalHost().getHostAddress(), port);
-            ICentraleBank centrale = (ICentraleBank) clientRegistry.lookup(rmiBalie);  
-            centrale.maakOverRekening();
+            centrale = (ICentraleBank) clientRegistry.lookup(rmiBalie);  
                         return centrale;
                        
             } catch (Exception exc) {
@@ -127,7 +130,7 @@ public class BalieServer extends Application {
 
     public void gotoBankSelect() {
         try {
-            BalieController bankSelect = (BalieController) replaceSceneContent("Balie.fxml");
+            bankSelect = (BalieController) replaceSceneContent("Balie.fxml");
             bankSelect.setApp(this, connectToCentrale());
         } catch (Exception ex) {
             Logger.getLogger(BankierClient.class.getName()).log(Level.SEVERE, null, ex);

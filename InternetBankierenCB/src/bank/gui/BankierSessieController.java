@@ -161,9 +161,11 @@ public class BankierSessieController extends UnicastRemoteObject implements Init
             // de andere balies bevind.
             if(overgemaakt){
                 tfBalance.setText(sessie.getRekening().getSaldo() + "");
-                balie.informRekeningen(to);
+                balie.informEigenRekeningen(to);
             } else{
-                
+                balie.informAndereRekeningen(new String[]{String.valueOf(to), String.valueOf(centen)});
+                sessie.maakOverRekening(from, new Money(-centen, Money.EURO));
+                tfBalance.setText(sessie.getRekening().getSaldo() + "");
             }
 
             
@@ -184,25 +186,13 @@ public class BankierSessieController extends UnicastRemoteObject implements Init
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) throws RemoteException {
-//        if(evt.getNewValue() instanceof String){
-//            String inform = (String)evt.getNewValue();
-//            if(inform.equals("OVERGEMAAKT")){
-//                try {
-//                    tfBalance.setText(sessie.getRekening().getSaldo() + "");
-//                } catch (InvalidSessionException ex) {
-//                    Logger.getLogger(BankierSessieController.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
-//        }
-
-            int reknr = (int)evt.getNewValue();
-            try {
-                if(reknr == sessie.getRekening().getNr()){
-                    tfBalance.setText(sessie.getRekening().getSaldo() + "");
-                }
-            } catch (InvalidSessionException ex) {
-                Logger.getLogger(BankierSessieController.class.getName()).log(Level.SEVERE, null, ex);
+        int reknr = (int)evt.getNewValue();
+        try {
+            if(reknr == sessie.getRekening().getNr()){
+                tfBalance.setText(sessie.getRekening().getSaldo() + "");
             }
-        
+        } catch (InvalidSessionException ex) {
+            Logger.getLogger(BankierSessieController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

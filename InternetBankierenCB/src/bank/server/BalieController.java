@@ -9,6 +9,7 @@ package bank.server;
 import FontysRMIListener.RemotePropertyListener;
 import FontysRMIListener.RemotePublisher;
 import bank.bankieren.Bank;
+import bank.bankieren.Money;
 import bank.gui.BankierClient;
 import bank.internettoegang.Balie;
 import bank.internettoegang.IBalie;
@@ -20,6 +21,7 @@ import java.net.URL;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -49,18 +51,23 @@ public class BalieController extends UnicastRemoteObject implements Initializabl
     private BalieServer application;
     private String bankNaam;
     private ICentraleBank centrale;
+    private IBalie balie;
     private RemotePublisher remoteCentrale;
      
     public void setApp(BalieServer application, ICentraleBank centrale) throws RemoteException{
         this.application = application;
         this.centrale = centrale;
         remoteCentrale = (RemotePublisher) centrale;
-        remoteCentrale.addListener(this, "centrale");
-        centrale.informBalies();
+        remoteCentrale.addListener(this, "centrale");        
     }
     
     public BalieController() throws RemoteException{
         
+    }
+    
+
+    public void setBalie(IBalie balie) {
+        this.balie = balie;
     }
 
     /**
@@ -91,7 +98,33 @@ public class BalieController extends UnicastRemoteObject implements Initializabl
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) throws RemoteException {
-        System.out.println(evt.getNewValue().toString());
+        try{
+            if(evt.getNewValue() instanceof String[]){
+                String[] overmaak = (String[])evt.getNewValue();
+                int rekeningnummer = Integer.parseInt(overmaak[0]);
+                long cents = Long.parseLong(overmaak[1]);
+                Money money = new Money(cents, Money.EURO);
+                if(balie.maakOver(rekeningnummer, money)){
+                    balie.informEigenRekeningen(rekeningnummer);
+                }
+            }
+        }
+        catch(RemoteException | NumberFormatException ex){
+            ex.toString();
+        }
+        
     }
+    
+    public boolean isInteger(String s, int radix) {
+    if(s.isEmpty()) return false;
+    for(int i = 0; i < s.length(); i++) {
+        if(i == 0 && s.charAt(i) == '-') {
+            if(s.length() == 1) return false;
+            else continue;
+        }
+        if(Character.digit(s.charAt(i),radix) < 0) return false;
+    }
+    return true;
+}
 }
    
