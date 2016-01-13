@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>LoginController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;BankierenNoObserverFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">bank.gui</a> &gt; <span class="el_source">LoginController.java</span></div><h1>LoginController.java</h1><pre class="source lang-java linenums">/*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>LoginController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;BankierenCentraal&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">bank.gui</a> &gt; <span class="el_source">LoginController.java</span></div><h1>LoginController.java</h1><pre class="source lang-java linenums">/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -82,19 +82,20 @@ import javafx.scene.input.KeyEvent;
 <span class="nc" id="L82">                taMessages.setText(&quot;accountname or password not correct&quot;);</span>
             } else {
 <span class="nc" id="L84">                IRekening r = sessie.getRekening();</span>
-<span class="nc" id="L85">                System.out.println(&quot;Rekening&quot; + r.getSaldo());</span>
-<span class="nc" id="L86">                application.gotoBankierSessie(balie, sessie);</span>
+                
+<span class="nc" id="L86">                System.out.println(&quot;Rekening&quot; + r.getSaldo());</span>
+<span class="nc" id="L87">                application.gotoBankierSessie(balie, sessie);</span>
             }
-<span class="nc" id="L88">        } catch (RemoteException e1) {</span>
-<span class="nc" id="L89">            taMessages.setText(&quot;bad connection with counter&quot;);</span>
-<span class="nc" id="L90">            e1.printStackTrace();</span>
-<span class="nc" id="L91">        }</span>
-<span class="nc" id="L92">    }</span>
+<span class="nc" id="L89">        } catch (RemoteException e1) {</span>
+<span class="nc" id="L90">            taMessages.setText(&quot;bad connection with counter&quot;);</span>
+<span class="nc" id="L91">            e1.printStackTrace();</span>
+<span class="nc" id="L92">        }</span>
+<span class="nc" id="L93">    }</span>
 
     @FXML
     private void openAccount(ActionEvent event) {
-<span class="nc" id="L96">        application.gotoOpenRekening(balie);</span>
-<span class="nc" id="L97">    }</span>
+<span class="nc" id="L97">        application.gotoOpenRekening(balie);</span>
+<span class="nc" id="L98">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

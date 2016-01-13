@@ -9,6 +9,7 @@ import bank.bankieren.Bank;
 import bank.bankieren.Money;
 import fontys.util.InvalidSessionException;
 import fontys.util.NumberDoesntExistException;
+import internetbankieren.CentraleBank;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,7 +44,7 @@ public class IBankiersessieTest {
     
     @Before
     public void setUp() throws RemoteException {
-        balie = new Balie(bank);
+        balie = new Balie(bank, new CentraleBank());
         balie.openRekening("Frank", "Veghel", "Frank");
         balie.openRekening("Haver", "Veghel", "Haver");
     }
@@ -108,7 +109,33 @@ public class IBankiersessieTest {
             sessie.maakOver(100000001, new Money(100, "€"));
         } catch (InterruptedException ex) {
             Logger.getLogger(IBankiersessieTest.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+    }
+    
+    /**
+     * @Author Frank Haver
+     * Test het overmaken naar een bepaalde rekening
+     * 1) test het overmaken in juiste omstandigheden
+     * 2) test het overmaken met ongeldig rekeningnummer
+     * @throws RemoteException 
+     */
+    @Test
+    public void testMaakOverRekening() throws RemoteException{
+        IBankiersessie sessie = balie.logIn("Frank", "Frank");
+        IBankiersessie sessie2 = balie.logIn("Haver", "Haver");    
+        boolean gelukt = false;
+        try {
+            gelukt = sessie.maakOverRekening(sessie2.getRekening().getNr(), new Money(100, Money.EURO));
+        } catch (InvalidSessionException ex) {
+            Logger.getLogger(IBankiersessieTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        Assert.assertTrue("er moeten over overgemaakt kunnen worden", gelukt);
+        gelukt = true;
+        
+        gelukt = sessie.maakOverRekening(3, new Money(100, Money.EURO));
+        
+        
+        Assert.assertFalse("er mag niet worden overgemaakt", gelukt);
     }
 }

@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Bank.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;BankierenNoObserverFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">bank.bankieren</a> &gt; <span class="el_source">Bank.java</span></div><h1>Bank.java</h1><pre class="source lang-java linenums">package bank.bankieren;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Bank.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;BankierenCentraal&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">bank.bankieren</a> &gt; <span class="el_source">Bank.java</span></div><h1>Bank.java</h1><pre class="source lang-java linenums">package bank.bankieren;
 
 import fontys.util.*;
 
-import java.rmi.RemoteException;
 import java.util.*;
 
 public class Bank implements IBank {
@@ -16,13 +15,14 @@ public class Bank implements IBank {
 	private int nieuwReknr;
 	private String name;
 
-<span class="fc" id="L19">	public Bank(String name) {</span>
-<span class="fc" id="L20">		accounts = new HashMap&lt;Integer,IRekeningTbvBank&gt;();</span>
-<span class="fc" id="L21">		clients = new ArrayList&lt;IKlant&gt;();</span>
-<span class="fc" id="L22">		nieuwReknr = 100000000;	</span>
-<span class="fc" id="L23">		this.name = name;	</span>
-<span class="fc" id="L24">	}</span>
+<span class="fc" id="L18">	public Bank(String name) {</span>
+<span class="fc" id="L19">		accounts = new HashMap&lt;Integer,IRekeningTbvBank&gt;();</span>
+<span class="fc" id="L20">		clients = new ArrayList&lt;IKlant&gt;();</span>
+<span class="fc" id="L21">		nieuwReknr = 100000000;	</span>
+<span class="fc" id="L22">		this.name = name;	</span>
+<span class="fc" id="L23">	}</span>
 
+        @Override
 	public int openRekening(String name, String city) {
 <span class="pc bpc" id="L27" title="2 of 4 branches missed.">		if (name.equals(&quot;&quot;) || city.equals(&quot;&quot;))</span>
 <span class="nc" id="L28">			return -1;</span>
@@ -44,43 +44,59 @@ public class Bank implements IBank {
 <span class="fc" id="L44">		return klant;</span>
 	}
 
+        @Override
 	public IRekening getRekening(int nr) {
-<span class="fc" id="L48">		return accounts.get(nr);</span>
+<span class="fc" id="L49">		return accounts.get(nr);</span>
 	}
 
+        @Override
 	public boolean maakOver(int source, int destination, Money money)
 			throws NumberDoesntExistException {
-<span class="pc bpc" id="L53" title="1 of 2 branches missed.">		if (source == destination)</span>
-<span class="nc" id="L54">			throw new RuntimeException(</span>
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">		if (source == destination)</span>
+<span class="nc" id="L56">			throw new RuntimeException(</span>
 					&quot;cannot transfer money to your own account&quot;);
-<span class="pc bpc" id="L56" title="1 of 2 branches missed.">		if (!money.isPositive())</span>
-<span class="nc" id="L57">			throw new RuntimeException(&quot;money must be positive&quot;);</span>
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">		if (!money.isPositive())</span>
+<span class="nc" id="L59">			throw new RuntimeException(&quot;money must be positive&quot;);</span>
 
-<span class="fc" id="L59">		IRekeningTbvBank source_account = (IRekeningTbvBank) getRekening(source);</span>
-<span class="pc bpc" id="L60" title="1 of 2 branches missed.">		if (source_account == null)</span>
-<span class="nc" id="L61">			throw new NumberDoesntExistException(&quot;account &quot; + source</span>
+<span class="fc" id="L61">		IRekeningTbvBank source_account = (IRekeningTbvBank) getRekening(source);</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">		if (source_account == null)</span>
+<span class="nc" id="L63">			throw new NumberDoesntExistException(&quot;account &quot; + source</span>
 					+ &quot; unknown at &quot; + name);
-
-<span class="fc" id="L64">		Money negative = Money.difference(new Money(0, money.getCurrency()),</span>
+<span class="fc" id="L65">		IRekeningTbvBank dest_account = (IRekeningTbvBank) getRekening(destination);</span>
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">		if (dest_account == null) </span>
+//			throw new NumberDoesntExistException(&quot;account &quot; + destination
+//					+ &quot; unknown at &quot; + name);
+<span class="nc" id="L69">                    return false;</span>
+                
+<span class="fc" id="L71">                Money negative = Money.difference(new Money(0, money.getCurrency()),</span>
 				money);
-<span class="fc" id="L66">		boolean success = source_account.muteer(negative);</span>
-<span class="pc bpc" id="L67" title="1 of 2 branches missed.">		if (!success)</span>
-<span class="nc" id="L68">			return false;</span>
+<span class="fc" id="L73">		boolean success = source_account.muteer(negative);</span>
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">		if (!success)</span>
+<span class="nc" id="L75">			return false;</span>
+<span class="fc" id="L76">		success = dest_account.muteer(money);</span>
 
-<span class="fc" id="L70">		IRekeningTbvBank dest_account = (IRekeningTbvBank) getRekening(destination);</span>
-<span class="pc bpc" id="L71" title="1 of 2 branches missed.">		if (dest_account == null) </span>
-<span class="nc" id="L72">			throw new NumberDoesntExistException(&quot;account &quot; + destination</span>
-					+ &quot; unknown at &quot; + name);
-<span class="fc" id="L74">		success = dest_account.muteer(money);</span>
-
-<span class="pc bpc" id="L76" title="1 of 2 branches missed.">		if (!success) // rollback</span>
-<span class="nc" id="L77">			source_account.muteer(money);</span>
-<span class="fc" id="L78">		return success;</span>
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">		if (!success) // rollback</span>
+<span class="nc" id="L79">			source_account.muteer(money);</span>
+<span class="fc" id="L80">		return success;</span>
 	}
+        
+        @Override
+        public boolean maakOverRekening(int destination, Money money){
+<span class="fc" id="L85">            IRekeningTbvBank dest_account = (IRekeningTbvBank) getRekening(destination);</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">		if (dest_account == null) {</span>
+<span class="fc" id="L87">                     return false;</span>
+                }
+<span class="fc bfc" id="L89" title="All 2 branches covered.">                if (money == null){</span>
+<span class="fc" id="L90">                    return false;</span>
+                }
+<span class="fc" id="L92">                System.out.println(this.name + &quot; Bank:\t &quot; + &quot; rekening gewijzigd met €&quot; + money.getValue());</span>
+<span class="fc" id="L93">                return dest_account.muteer(money);</span>
+                   
+        }
 
 	@Override
 	public String getName() {
-<span class="fc" id="L83">		return name;</span>
+<span class="fc" id="L99">		return name;</span>
 	}
 
 }

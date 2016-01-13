@@ -6,7 +6,12 @@
 package bank.internettoegang;
 
 import bank.bankieren.Bank;
+import bank.bankieren.Money;
+import fontys.util.InvalidSessionException;
+import internetbankieren.CentraleBank;
 import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import junit.framework.Assert;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -26,7 +31,8 @@ public class IBalieTest {
     
     public IBalieTest() throws RemoteException {
         bank = new Bank("Rabobank");
-        balie = new Balie(bank);
+        
+        balie = new Balie(bank, new CentraleBank());
     }
     
     @BeforeClass
@@ -118,7 +124,7 @@ public class IBalieTest {
     @Test
     public void testLogIn() throws RemoteException{
         // 1
-        balie = new Balie(new Bank("ABN"));
+        balie = new Balie(new Bank("ABN"), new CentraleBank());
         balie.openRekening("Frank", "Veghel", "Frank");
         IBankiersessie sessie1 = balie.logIn("Frankie", "Frank");
         Assert.assertNull("Sessie mag niet aangemaakt worden want accountnaam is onbekend", sessie1);
@@ -130,5 +136,26 @@ public class IBalieTest {
         // 3
         IBankiersessie sessie3 = balie.logIn("Frank", "Frank");
         Assert.assertNotNull("Sessie moet aangemaakt worden want de accountnaam - wachtwoordcombinatie klopt", sessie3);
+    }
+    
+    /**
+     * @Author Frank Haver
+     * Test het overmaken naar een specifieke rekening
+     * 1) test met ideale omstandigheden
+     * 2) test met ongeldig rekeningnummer
+     * @throws RemoteException 
+     */
+    @Test
+    public void testMaakOver() throws RemoteException{
+        balie.openRekening("Frank", "Veghel", "Frank");
+        balie.openRekening("Henk", "Henk", "Henk");
+        IBankiersessie sessie = balie.logIn("Frank", "Frank");
+        IBankiersessie sessie2 = balie.logIn("Haver", "Haver");
+        
+        boolean gelukt = balie.maakOver(100000001, new Money(100, Money.EURO));
+        Assert.assertTrue("er moet overgemaakt worden", gelukt);
+        
+        boolean mislukt = balie.maakOver(1, new Money(100, Money.EURO));
+        Assert.assertFalse("fout rekeningnummer zou niet overgemaakt mogen worden", mislukt);
     }
 }

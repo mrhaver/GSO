@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CentraleBankServer.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;BankierenCentraal&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">internetbankieren</a> &gt; <span class="el_source">CentraleBankServer.java</span></div><h1>CentraleBankServer.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package internetbankieren;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.Properties;
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+
+/**
+ *
+ * @author Alex Ras
+ */
+<span class="nc" id="L28">public class CentraleBankServer extends Application {</span>
+    
+<span class="nc" id="L30">    private final double MINIMUM_WINDOW_WIDTH = 600.0;</span>
+<span class="nc" id="L31">    private final double MINIMUM_WINDOW_HEIGHT = 200.0;</span>
+<span class="nc" id="L32">    private final int portNumber = 1100;</span>
+    private Registry registry;
+    
+    @Override
+    public void start(Stage primaryStage) {
+<span class="nc" id="L37">        Group root = new Group();</span>
+<span class="nc" id="L38">        final Image image = new Image(this.getClass().getResourceAsStream(&quot;/plaatjes/Europese-centrale-bank.png&quot;));</span>
+<span class="nc" id="L39">        Scene scene = new Scene(root, image.getWidth() + 30, image.getHeight() + 100 , Color.WHITE);</span>
+        
+<span class="nc" id="L41">        GridPane gridpane = new GridPane();</span>
+<span class="nc" id="L42">        gridpane.setPadding(new Insets(5));</span>
+<span class="nc" id="L43">        gridpane.setHgap(10);</span>
+<span class="nc" id="L44">        gridpane.setVgap(10);</span>
+        
+<span class="nc" id="L46">        final ImageView imv = new ImageView();</span>
+        
+<span class="nc" id="L48">        imv.setImage(image);</span>
+
+<span class="nc" id="L50">        final HBox pictureRegion = new HBox();</span>
+        
+<span class="nc" id="L52">        pictureRegion.getChildren().add(imv);</span>
+<span class="nc" id="L53">        gridpane.add(pictureRegion, 1, 1);</span>
+        
+        
+<span class="nc" id="L56">        root.getChildren().add(gridpane);        </span>
+<span class="nc" id="L57">        primaryStage.setScene(scene);</span>
+<span class="nc" id="L58">        primaryStage.show();</span>
+
+<span class="nc" id="L60">        startRegistry();</span>
+<span class="nc" id="L61">    }</span>
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+<span class="nc" id="L67">        launch(args);</span>
+<span class="nc" id="L68">    }</span>
+    
+    private void startRegistry(){
+        FileOutputStream out;
+        // reset het poortnummer
+        try{
+<span class="nc" id="L74">            String address = java.net.InetAddress.getLocalHost().getHostAddress();</span>
+<span class="nc" id="L75">            int port = portNumber;</span>
+<span class="nc" id="L76">            Properties props = new Properties();</span>
+<span class="nc" id="L77">            String rmiCentraleBank = address + &quot;:&quot; + port + &quot;/centraleBank&quot;;</span>
+<span class="nc" id="L78">            props.setProperty(&quot;port&quot;, String.valueOf(port));</span>
+<span class="nc" id="L79">            props.setProperty(&quot;centrale&quot;, rmiCentraleBank);</span>
+<span class="nc" id="L80">            out = new FileOutputStream(&quot;centraleBank.props&quot;);</span>
+<span class="nc" id="L81">            props.store(out, null);</span>
+<span class="nc" id="L82">            out.close();</span>
+            
+<span class="nc" id="L84">            props = new Properties();</span>
+<span class="nc" id="L85">            props.setProperty(&quot;port&quot;, String.valueOf(portNumber+1));</span>
+<span class="nc" id="L86">            out = new FileOutputStream(&quot;Port.props&quot;);</span>
+<span class="nc" id="L87">            props.store(out, null);</span>
+<span class="nc" id="L88">            out.close();</span>
+            
+<span class="nc" id="L90">            registry = LocateRegistry.createRegistry(port);</span>
+<span class="nc" id="L91">            ICentraleBank bank = new CentraleBank();</span>
+<span class="nc" id="L92">            registry.rebind(rmiCentraleBank, bank);</span>
+        } 
+<span class="nc" id="L94">        catch(Exception ex)</span>
+        {
+<span class="nc" id="L96">            System.out.println(ex.toString());</span>
+<span class="nc" id="L97">        }</span>
+       
+<span class="nc" id="L99">    }</span>
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
