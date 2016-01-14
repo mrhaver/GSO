@@ -24,4 +24,13 @@ public interface ICentraleBank extends Remote{
      *      tweede string object kan omgezet worden naar een integer
      */
     void maakOverRekening(String[] overmaak) throws RemoteException;
+    
+    /**
+     * @Author Frank Haver
+     * methode stuurt een vrij rekeningnummer op en verhoogt het huidige 
+     * nieuwe rekeningnummer
+     * @return retourneert het nieuwe rekeningnummer
+     * @throws RemoteException 
+     */
+    int getNieuwRekeningNummer() throws RemoteException;
 }

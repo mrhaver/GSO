@@ -19,15 +19,18 @@ import java.rmi.server.UnicastRemoteObject;
 public class CentraleBank extends UnicastRemoteObject implements ICentraleBank, RemotePublisher{
 
     private BasicPublisher publisher;
+    private static int nieuwRekeningNummer = 100000000;
     
     public CentraleBank() throws RemoteException{
         publisher = new BasicPublisher(new String[]{"centrale"});
     }
+   
     
-//    @Override
-//    public void informBalies(String bericht) throws RemoteException{
-//        publisher.inform(this, "centrale", this, bericht);
-//    }
+    @Override
+    public int getNieuwRekeningNummer(){
+        nieuwRekeningNummer++;
+        return nieuwRekeningNummer - 1;
+    }
     
     @Override
     public void maakOverRekening(String[] overmaak) throws RemoteException {

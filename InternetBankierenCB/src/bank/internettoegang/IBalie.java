@@ -12,11 +12,12 @@ public interface IBalie extends Remote {
    * @param plaats de woonplaats van de eigenaar van de nieuwe bankrekening
    * @param wachtwoord van het account waarmee er toegang kan worden verkregen 
    * tot de nieuwe bankrekening
+   * @param nieuwRekeningNummer een volgend vrij rekeningnummer die van de centrale is gehaald
    * @return IllegalArgumentException zodra naam of plaats een lege string of wachtwoord minder dan 
    * vier of meer dan acht karakters lang is en anders de gegenereerde 
    * accountnaam die de gebruiker heeft ingegeven
    */
-  String openRekening(String naam, String plaats, String wachtwoord) throws RemoteException;
+  String openRekening(String naam, String plaats, String wachtwoord, int nieuwRekeningNummer) throws RemoteException;
 
   /**
    * er wordt een sessie opgestart voor het login-account met de naam
@@ -63,6 +64,14 @@ public interface IBalie extends Remote {
    * @throws RemoteException
    */
   boolean maakOver(int rekeningnummer, Money money) throws RemoteException;
+  
+  /**
+   * @Author Frank Haver
+   * pakt een nieuw vrij rekeningnummer van de centrale
+   * @return retourneert het nieuwe rekeningnummer
+   * @throws RemoteException 
+   */
+  int getNieuwRekeningNummer() throws RemoteException;
   
 
 

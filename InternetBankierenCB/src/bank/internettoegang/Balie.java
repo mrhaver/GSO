@@ -30,20 +30,18 @@ public class Balie extends UnicastRemoteObject implements IBalie, RemotePublishe
 		sessions = new HashSet<IBankiersessie>();
 		random = new Random();
                 publisher = new BasicPublisher(new String[]{"balie"});
-                // Accounts for Testing reasons
-                openRekening("Frank", "Veghel", "Frank");
-                openRekening("Haver", "Veghel", "Haver");               
+
 	}
 
         @Override
-	public String openRekening(String naam, String plaats, String wachtwoord) {
+	public String openRekening(String naam, String plaats, String wachtwoord, int nieuwRekeningNummer) {
 		if (naam.equals(""))
                     throw new IllegalArgumentException("Naam mag niet leeg zijn");	
 		if (plaats.equals(""))
                     throw new IllegalArgumentException("Plaats mag niet leeg zijn");
 		if (wachtwoord.length() < 4 || wachtwoord.length() > 8)
                     throw new IllegalArgumentException("Wachtwoord moet groter dan 4 en kleiner dan 8 karakters zijn");
-		int nr = bank.openRekening(naam, plaats);
+		int nr = bank.openRekening(naam, plaats, nieuwRekeningNummer);
 		if (nr == -1)
 			return null;
 
@@ -91,6 +89,11 @@ public class Balie extends UnicastRemoteObject implements IBalie, RemotePublishe
     public void informAndereRekeningen(String[] overmaak) throws RemoteException {
         centrale.maakOverRekening(overmaak);
         System.out.println(this.bank.getName() + " Balie:\t rekeningnummer zoeken via Centrale Bank");
+    }
+    
+    @Override
+    public int getNieuwRekeningNummer() throws RemoteException{
+        return centrale.getNieuwRekeningNummer();
     }
     
     @Override

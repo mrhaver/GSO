@@ -90,6 +90,7 @@ public class BalieController extends UnicastRemoteObject implements Initializabl
             }
         }
         );
+        
     }  
    
     @FXML

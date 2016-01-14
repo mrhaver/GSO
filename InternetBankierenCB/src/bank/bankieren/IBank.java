@@ -17,10 +17,12 @@ public interface IBank {
      *            van de eigenaar van de nieuwe bankrekening
      * @param plaats
      *            de woonplaats van de eigenaar van de nieuwe bankrekening
+     * @param nieuwRekeningNummer
+     *            nieuw vrij rekeningnummer komt van de centrale af
      * @return -1 zodra naam of plaats een lege string en anders het nummer van de
      *         gecreeerde bankrekening
      */
-    int openRekening(String naam, String plaats);
+    int openRekening(String naam, String plaats, int nieuwRekeningNummer);
 
     /**
      * er wordt bedrag overgemaakt van de bankrekening met nummer bron naar de

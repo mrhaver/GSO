@@ -68,7 +68,7 @@ public class OpenRekeningController  implements Initializable {
     private void registerAccount(ActionEvent event) {
         try {
             String accountNaam;
-            accountNaam = balie.openRekening(tfName.getText(), tfCity.getText(), tfPassWord.getText());
+            accountNaam = balie.openRekening(tfName.getText(), tfCity.getText(), tfPassWord.getText(), balie.getNieuwRekeningNummer());
             if (accountNaam == null) {
                 return;
             }

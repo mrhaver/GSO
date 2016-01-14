@@ -11,6 +11,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Properties;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -20,6 +22,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  *
@@ -37,6 +40,13 @@ public class CentraleBankServer extends Application {
         Group root = new Group();
         final Image image = new Image(this.getClass().getResourceAsStream("/plaatjes/Europese-centrale-bank.png"));
         Scene scene = new Scene(root, image.getWidth() + 30, image.getHeight() + 100 , Color.WHITE);
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
         
         GridPane gridpane = new GridPane();
         gridpane.setPadding(new Insets(5));
@@ -58,6 +68,8 @@ public class CentraleBankServer extends Application {
         primaryStage.show();
 
         startRegistry();
+        
+        
     }
 
     /**
@@ -90,6 +102,7 @@ public class CentraleBankServer extends Application {
             registry = LocateRegistry.createRegistry(port);
             ICentraleBank bank = new CentraleBank();
             registry.rebind(rmiCentraleBank, bank);
+//            registry.unbind(rmiCentraleBank);
         } 
         catch(Exception ex)
         {

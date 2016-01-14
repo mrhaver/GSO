@@ -12,26 +12,23 @@ public class Bank implements IBank {
 	private static final long serialVersionUID = -8728841131739353765L;
 	private Map<Integer,IRekeningTbvBank> accounts;
 	private Collection<IKlant> clients;
-	private int nieuwReknr;
 	private String name;
 
 	public Bank(String name) {
 		accounts = new HashMap<Integer,IRekeningTbvBank>();
-		clients = new ArrayList<IKlant>();
-		nieuwReknr = 100000000;	
+		clients = new ArrayList<IKlant>();	
 		this.name = name;	
 	}
 
         @Override
-	public int openRekening(String name, String city) {
+	public int openRekening(String name, String city, int nieuwRekeningNummer) {
 		if (name.equals("") || city.equals(""))
 			return -1;
 
 		IKlant klant = getKlant(name, city);
-		IRekeningTbvBank account = new Rekening(nieuwReknr, klant, Money.EURO);
-		accounts.put(nieuwReknr,account);
-		nieuwReknr++;
-		return nieuwReknr-1;
+		IRekeningTbvBank account = new Rekening(nieuwRekeningNummer, klant, Money.EURO);
+		accounts.put(nieuwRekeningNummer,account);		
+		return nieuwRekeningNummer;
 	}
 
 	private IKlant getKlant(String name, String city) {
