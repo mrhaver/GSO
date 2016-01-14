@@ -29,9 +29,11 @@ public class IBankiersessieTest {
     
     private Bank bank;
     private Balie balie;
+    private final CentraleBank centrale;
     
     public IBankiersessieTest() throws RemoteException {
         bank = new Bank("Rabobank");
+        centrale = new CentraleBank();
     }
     
     @BeforeClass
@@ -44,9 +46,10 @@ public class IBankiersessieTest {
     
     @Before
     public void setUp() throws RemoteException {
-        balie = new Balie(bank, new CentraleBank());
-        balie.openRekening("Frank", "Veghel", "Frank");
-        balie.openRekening("Haver", "Veghel", "Haver");
+        balie = new Balie(bank, centrale);
+        
+        balie.openRekening("Frank", "Veghel", "Frank", centrale.getNieuwRekeningNummer());
+        balie.openRekening("Haver", "Veghel", "Haver", centrale.getNieuwRekeningNummer());
     }
     
     @After

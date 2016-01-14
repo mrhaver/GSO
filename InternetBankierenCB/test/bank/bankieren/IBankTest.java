@@ -6,6 +6,9 @@
 package bank.bankieren;
 
 import fontys.util.NumberDoesntExistException;
+import internetbankieren.CentraleBank;
+import internetbankieren.ICentraleBank;
+import java.rmi.RemoteException;
 import junit.framework.Assert;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -21,9 +24,11 @@ import static org.junit.Assert.*;
 public class IBankTest {
     
     private final Bank bank;
+    private CentraleBank centrale;
     
-    public IBankTest() {
+    public IBankTest() throws RemoteException {
         bank = new Bank("Rabobank");
+        centrale = new CentraleBank();
     }
     
     @BeforeClass
@@ -47,13 +52,16 @@ public class IBankTest {
      * Test of openRekening method, of class IBank.
      */
     @Test
-    public void testOpenRekening() {
+    public void testOpenRekening() throws RemoteException {
         String naam = "MijnRekening";
         String plaats = "MijnPlaats";
         IBank instance = (IBank) bank;
+        centrale = new CentraleBank();
+        ICentraleBank cb = (ICentraleBank) centrale;
         
         int expNr = 100000000;
-        int nr = instance.openRekening(naam, plaats);
+        
+        int nr = instance.openRekening(naam, plaats, cb.getNieuwRekeningNummer());
         
         Assert.assertEquals(expNr, nr);
     }
@@ -64,11 +72,12 @@ public class IBankTest {
      * Test of maakOver method, of class IBank.
      */
     @Test
-    public void testMaakOver() throws NumberDoesntExistException {
+    public void testMaakOver() throws NumberDoesntExistException, RemoteException {
         Money bedrag = new Money(200,"€");
         IBank instance = (IBank) bank;
-        int bron = instance.openRekening("Rekening1", "Plaats");
-        int bestemming = instance.openRekening("Rekening2", "Plaats");
+        ICentraleBank cb = (ICentraleBank) centrale;
+        int bron = instance.openRekening("Rekening1", "Plaats", cb.getNieuwRekeningNummer());
+        int bestemming = instance.openRekening("Rekening2", "Plaats", cb.getNieuwRekeningNummer());
         
         boolean expResult = true;
         boolean result = instance.maakOver(bron, bestemming, bedrag);
@@ -81,10 +90,11 @@ public class IBankTest {
      * Test of getRekening method, of class IBank.
      */
     @Test
-    public void testGetRekening() {        
+    public void testGetRekening() throws RemoteException {        
         IBank instance = (IBank) bank;
+        ICentraleBank cb = (ICentraleBank) centrale;
         
-        int expResult = instance.openRekening("Rekening", "Plaats");
+        int expResult = instance.openRekening("Rekening", "Plaats", cb.getNieuwRekeningNummer());
         int result = instance.getRekening(expResult).getNr();
         
         Assert.assertEquals(expResult, result);
@@ -112,11 +122,12 @@ public class IBankTest {
      * 3)   Test met een ongeldig bedrag
      */
     @Test
-    public void testMaakOverRekening(){
+    public void testMaakOverRekening() throws RemoteException{
         IBank instance = (IBank) bank;
+        ICentraleBank cb = (ICentraleBank) centrale;
+        int bron = instance.openRekening("Rekening1", "Plaats", cb.getNieuwRekeningNummer());
+        int bestemming = instance.openRekening("Rekening2", "Plaats", cb.getNieuwRekeningNummer());
         
-        int bron = instance.openRekening("Rekening1", "Plaats");
-        int bestemming = instance.openRekening("Rekening2", "Plaats");
         
         instance.maakOverRekening(bestemming, new Money(100, Money.EURO));
         

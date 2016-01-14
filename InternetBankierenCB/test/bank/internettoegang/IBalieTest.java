@@ -9,6 +9,7 @@ import bank.bankieren.Bank;
 import bank.bankieren.Money;
 import fontys.util.InvalidSessionException;
 import internetbankieren.CentraleBank;
+import internetbankieren.ICentraleBank;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,13 +27,15 @@ import static org.junit.Assert.*;
  */
 public class IBalieTest {
     
-    private Bank bank;
+    private final Bank bank;
     private Balie balie;
+    private final CentraleBank centrale;
     
     public IBalieTest() throws RemoteException {
-        bank = new Bank("Rabobank");
+        bank = new Bank("Rabobank"); 
+        centrale = new CentraleBank();
+        balie = new Balie(bank, centrale);
         
-        balie = new Balie(bank, new CentraleBank());
     }
     
     @BeforeClass
@@ -57,8 +60,9 @@ public class IBalieTest {
      * naam is ingegeven.
      */
     @Test(expected=IllegalArgumentException.class)
-    public void testOpenRekeningLegeNaam(){
-        balie.openRekening("", "Veghel", "Frank");
+    public void testOpenRekeningLegeNaam() throws RemoteException{
+        ICentraleBank cb = (ICentraleBank) centrale;
+        balie.openRekening("", "Veghel", "Frank", cb.getNieuwRekeningNummer());
     }
     
     /**
@@ -67,8 +71,9 @@ public class IBalieTest {
      * plaats is ingegeven.
      */
     @Test(expected=IllegalArgumentException.class)
-    public void testOpenRekeningLegePlaats(){
-        balie.openRekening("Frank", "", "Frank");
+    public void testOpenRekeningLegePlaats() throws RemoteException{
+        ICentraleBank cb = (ICentraleBank) centrale;
+        balie.openRekening("Frank", "", "Frank", cb.getNieuwRekeningNummer());
     }
     
     /**
@@ -77,8 +82,9 @@ public class IBalieTest {
      * wachtwoord is ingegeven.
      */
     @Test(expected=IllegalArgumentException.class)
-    public void testOpenRekeningLeegWachtwoord(){
-        balie.openRekening("Frank", "Veghel", "");
+    public void testOpenRekeningLeegWachtwoord() throws RemoteException{
+        ICentraleBank cb = (ICentraleBank) centrale;
+        balie.openRekening("Frank", "Veghel", "",cb.getNieuwRekeningNummer());
     }
     
     /**
@@ -87,8 +93,9 @@ public class IBalieTest {
      * een te kort wachtwoord is ingegeven.
      */
     @Test(expected=IllegalArgumentException.class)
-    public void testOpenRekeningKortWachtwoord(){
-        balie.openRekening("Frank", "Veghel", "Fra");
+    public void testOpenRekeningKortWachtwoord() throws RemoteException{
+        ICentraleBank cb = (ICentraleBank) centrale;
+        balie.openRekening("Frank", "Veghel", "Fra", cb.getNieuwRekeningNummer());
     }
     
     /**
@@ -97,8 +104,9 @@ public class IBalieTest {
      * een te lang wachtwoord is ingegeven.
      */
     @Test(expected=IllegalArgumentException.class)
-    public void testOpenRekeningLangWachtwoord(){
-        balie.openRekening("Frank", "Veghel", "FrankHaver");
+    public void testOpenRekeningLangWachtwoord() throws RemoteException{
+        ICentraleBank cb = (ICentraleBank) centrale;
+        balie.openRekening("Frank", "Veghel", "FrankHaver", cb.getNieuwRekeningNummer());
     }
     
     /**
@@ -107,8 +115,9 @@ public class IBalieTest {
      * retourneert.
      */
     @Test
-    public void testOpenRekening(){
-        String nieuwAccountNaam = balie.openRekening("Frank", "Veghel", "Frank");
+    public void testOpenRekening() throws RemoteException{
+         ICentraleBank cb = (ICentraleBank) centrale;
+        String nieuwAccountNaam = balie.openRekening("Frank", "Veghel", "Frank", cb.getNieuwRekeningNummer());
         Assert.assertNotNull("Rekening niet juist aangemaakt", nieuwAccountNaam);
     }
     
@@ -124,8 +133,10 @@ public class IBalieTest {
     @Test
     public void testLogIn() throws RemoteException{
         // 1
-        balie = new Balie(new Bank("ABN"), new CentraleBank());
-        balie.openRekening("Frank", "Veghel", "Frank");
+        ICentraleBank cb = (ICentraleBank) centrale;
+        balie = new Balie(new Bank("ABN"), centrale);
+        
+        balie.openRekening("Frank", "Veghel", "Frank", cb.getNieuwRekeningNummer());
         IBankiersessie sessie1 = balie.logIn("Frankie", "Frank");
         Assert.assertNull("Sessie mag niet aangemaakt worden want accountnaam is onbekend", sessie1);
     
@@ -146,13 +157,14 @@ public class IBalieTest {
      * @throws RemoteException 
      */
     @Test
-    public void testMaakOver() throws RemoteException{
-        balie.openRekening("Frank", "Veghel", "Frank");
-        balie.openRekening("Henk", "Henk", "Henk");
+    public void testMaakOver() throws RemoteException, InvalidSessionException{
+        ICentraleBank cb = (ICentraleBank) centrale;
+        balie.openRekening("Frank", "Veghel", "Frank", cb.getNieuwRekeningNummer());
+        balie.openRekening("Henk", "Henk", "Henk", cb.getNieuwRekeningNummer());
         IBankiersessie sessie = balie.logIn("Frank", "Frank");
         IBankiersessie sessie2 = balie.logIn("Haver", "Haver");
         
-        boolean gelukt = balie.maakOver(100000001, new Money(100, Money.EURO));
+        boolean gelukt = balie.maakOver(sessie.getRekening().getNr(), new Money(100, Money.EURO));
         Assert.assertTrue("er moet overgemaakt worden", gelukt);
         
         boolean mislukt = balie.maakOver(1, new Money(100, Money.EURO));
